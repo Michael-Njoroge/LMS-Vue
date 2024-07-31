@@ -1,39 +1,28 @@
 <template>
-  <div class="layout">
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <PageHeader />
+    <div class="layout">
+        <section class="content-header mb-4">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                  <PageHeader />
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <div class="content-container">
+            <router-view />
         </div>
-      </div>
-    </section>
-    <section class="content">
-      <div class="container">
-        <div class="row">
-          <HomePage />
-        </div>
-      </div>
-    </section>
-   
-    <PageFooter />
-  </div>
+      <PageFooter />
+    </div>
 </template>
 
 <script setup lang="js">
-import PageFooter from "@/components/footer/PageFooter.vue";
-import PageHeader from "@/components/header/PageHeader.vue";
-import HomePage from "@/pages/HomePage.vue";
+import PageFooter from "@/components/PageFooter.vue";
+import PageHeader from "@/components/PageHeader.vue";
+
 </script>
 
-<style scoped>
-/* Ensure the content sections have some styles for visibility */
-.layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.content-header {
+<style>
+  .content-header {
   padding: 20px;
   background-color: #f8f9fa;
 }
@@ -43,8 +32,4 @@ import HomePage from "@/pages/HomePage.vue";
   padding: 20px;
 }
 
-.content-container {
-  padding: 20px;
-  background-color: #e9ecef;
-}
 </style>

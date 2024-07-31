@@ -2,17 +2,20 @@
   <div class="container">
     <div class="row">
       <nav class="navbar navbar-expand-lg navbar-dark bg-info px-4">
-        <strong><a class="navbar-brand text-dark" href="#">LMS</a></strong>
+        <strong><router-link class="navbar-brand text-dark" to="/">LMS App</router-link></strong>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-collapse" aria-controls="nav-collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="nav-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Link</a>
+              <a class="nav-link text-dark" href="#">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              <a class="nav-link text-dark" href="#">Courses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#">Tutorials</a>
             </li>
           </ul>
           <form class="d-flex">
@@ -33,11 +36,11 @@
             </div>
             <div class="nav-item dropdown">
               <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <em>User</em>
+                <em>Michael</em>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item text-dark" href="#">Profile</a></li>
-                <li><a class="dropdown-item text-dark" href="#">Sign Out</a></li>
+                <li><router-link class="dropdown-item text-dark" to="/">Profile</router-link></li>
+                <li><router-link class="dropdown-item text-dark" to="/login">Sign Out</router-link></li>
               </ul>
             </div>
           </div>

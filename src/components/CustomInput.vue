@@ -1,19 +1,21 @@
 <template>
-  <div class="custom-input">
-    <label v-if="label" :for="id">{{ label }}</label>
-    <input
+  <CForm>
+    <CFormInput
       :type="type"
       :id="id"
-      :name="name"
-      :value="modelValue"
+      :label="label"
       :placeholder="placeholder"
-      class="form-control"
+      :text="text"
+      :name="name"
+      :modelValue="modelValue"
+      aria-describedby="exampleFormControlInputHelpInline"
     />
-  </div>
+  </CForm>
 </template>
 
 <script setup lang="js">
 import { defineProps } from 'vue';
+import { CFormInput, CForm } from '@coreui/vue';
 
 defineProps({
   modelValue: {
@@ -36,6 +38,10 @@ defineProps({
     type: String,
     default: ''
   },
+  text: {
+    type: String,
+    default: ''
+  },
   placeholder: {
     type: String,
     default: ''
@@ -44,18 +50,4 @@ defineProps({
 
 </script>
 
-<style scoped>
-.custom-input {
-  margin-bottom: 1rem;
-}
-
-.custom-input label {
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-.custom-input .form-control {
-  padding: 0.5rem;
-  font-size: 1rem;
-}
-</style>
+<style scoped></style>
