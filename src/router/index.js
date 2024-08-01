@@ -4,6 +4,8 @@ import LoginPage from "@/views/LoginPage.vue";
 import Forgot from "@/views/ForgotPassword.vue";
 import Reset from "@/views/ResetPassword.vue";
 import HomePage from "@/views/HomePage.vue";
+import Terms from "@/views/TermsAndConditions.vue";
+import Privacy from "@/views/PrivacyPolicy.vue";
 
 const routes = [
   {
@@ -34,6 +36,18 @@ const routes = [
     path: "/",
     name: "HomePage",
     component: HomePage,
+  },
+
+  {
+    path: "/terms-conditions",
+    name: "Terms",
+    component: Terms,
+  },
+
+  {
+    path: "/privacy-policy",
+    name: "Privacy",
+    component: Privacy,
   },
 ];
 

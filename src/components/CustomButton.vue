@@ -1,5 +1,5 @@
 <template>
-     <CButton :color="color" :shape="shape" :type="type" :class="customClass" :style="inlineStyles">{{ text }}</CButton>
+     <CButton :color="color" :shape="shape" :type="type" :class="customClass" :variant="variant" :style="inlineStyles">{{ text }}</CButton>
 </template>
 
 <script setup lang="js">
@@ -26,12 +26,16 @@ defineProps({
     customClass: {
         type: String,
         default: ''
-    }
+    },
+    variant:String
 });
 
 const inlineStyles = computed(() => ({
     width: 'fit-content',
-    display: 'inline-block'
+    display: 'inline-block',
+    textTransform: 'initial'
+
+
 }));
 </script>
 

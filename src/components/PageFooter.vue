@@ -49,7 +49,7 @@
                 <router-link to="#">GYM Coaching</router-link>
                 <router-link to="#">Faq</router-link>
                 <router-link to="#">About Us</router-link>
-                <router-link to="#">Privacy Policy</router-link>
+                <router-link to="privacy-policy">Privacy Policy</router-link>
               </div>
             </CCol>
             <CCol sm="2" class="mt-3">
@@ -94,9 +94,9 @@
             </CCol>
              <CCol sm="6">
                 <div class="d-flex gap-1">
-                  <p href="#" :style="{ borderRight: '1px solid #ccc' }"> <a href="#" class="mx-3">Terms of service</a></p>
-                  <p href="#" :style="{ borderRight: '1px solid #ccc' }"><a href="#" class="mx-3">Privacy Policy</a></p>
-                  <p href="#" :style="{ borderRight: '1px solid #ccc' }"><a href="#" class="mx-3">Subscription</a></p>
+                  <p href="#" :style="{ borderRight: '1px solid #ccc' }"> <router-link to="terms-conditions" class="mx-3">Terms of service</router-link></p>
+                  <p href="#" :style="{ borderRight: '1px solid #ccc' }"><router-link to="privacy-policy" class="mx-3">Privacy Policy</router-link></p>
+                  <p href="#" :style="{ borderRight: '1px solid #ccc' }"><router-link to="#" class="mx-3">Subscription</router-link></p>
                   <p><a href="#" class="mx-3">Login & Register</a></p>
                 </div>
             </CCol>
