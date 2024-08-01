@@ -1,9 +1,15 @@
 <template>
   <div class="container">
     <div class="row">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-info px-4">
-        <strong><router-link class="navbar-brand text-dark" to="/">LMS App</router-link></strong>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-collapse" aria-controls="nav-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <nav class="navbar navbar-expand-lg navbar-dark px-2 me-4" :style="{backgroundColor:'#f3f4f7'}">
+        <div class="col-2 px-4">
+          <strong><router-link class="navbar-brand text-dark" to="/"> 
+          <CAvatar class="fs-3" text-color="white" size="md" src="/images/l.jpg"></CAvatar>
+          SkillLink
+        </router-link></strong>
+        </div>
+       <div class="col-10 px-4">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-collapse" aria-controls="nav-collapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="nav-collapse">
@@ -15,6 +21,15 @@
               <a class="nav-link text-dark" href="#">Courses</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link text-dark" href="#">Tutorials</a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link text-dark" href="#">Tutorials</a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link text-dark" href="#">Tutorials</a>
+            </li>
+             <li class="nav-item">
               <a class="nav-link text-dark" href="#">Tutorials</a>
             </li>
           </ul>
@@ -45,14 +60,14 @@
             </div>
           </div>
         </div>
+       </div>
       </nav>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-};
+<script setup>
+import { CAvatar} from '@coreui/vue';
 </script>
 
 <style scoped>
