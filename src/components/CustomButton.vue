@@ -1,5 +1,5 @@
 <template>
-     <CButton :color="color" :shape="shape" :class="customClass" :style="inlineStyles">{{ text }}</CButton>
+     <CButton :color="color" :shape="shape" :type="type" :class="customClass" :style="inlineStyles">{{ text }}</CButton>
 </template>
 
 <script setup lang="js">
@@ -16,6 +16,10 @@ defineProps({
         default: 'rounded-pill'
     },
     text: {
+        type: String,
+        default: 'button'
+    },
+    type: {
         type: String,
         default: 'button'
     },

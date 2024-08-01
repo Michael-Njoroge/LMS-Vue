@@ -1,4 +1,25 @@
 <template>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 mx-auto ">
+       <h5>Home </h5>
+      </div>
+    </div>
+  </div>
+</template>
+<script setup>
+</script>
+<style scoped></style>
+
+
+
+
+
+
+
+
+
+<!-- <template>
   <div class="container mb-3">
     <CustomInput v-model="inputValue" text="Must be 8-20 characters long" label="Email address" placeholder="name@example.com" />
 
@@ -45,4 +66,4 @@ const selectOptions = ref([
   color: #2c3e50;
   margin-top: 60px;
 }
-</style>
+</style> -->

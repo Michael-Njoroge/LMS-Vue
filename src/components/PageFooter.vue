@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper d-flex flex-column min-vh-100">
+    <div class="wrapper d-flex flex-column  ">
       <CFooter class="mt-auto">
         <CContainer flui3>
           <CRow>
@@ -7,7 +7,7 @@
               <div class="footer-logo d-flex flex-column">
                 <router-link to="/" class="d-flex gap-3 flex-row align-items-center justfy-contents-center mb-3">
                   <CAvatar class="fs-3" text-color="white" size="xl" src="/images/l.jpg"></CAvatar>
-                  <h3 class="comp-name mb-0 ">SkillLink</h3>
+                  <h4 class="comp-name mb-0 ">SkillLink</h4>
                 </router-link>
                 <p :style="{ color: 'rgb(107, 115, 133)'}">We’re always in search for talented and motivated people. Don’t be shy introduce yourself!</p>
                 <div class="social-icons d-flex gap-2">
@@ -40,8 +40,8 @@
                 <CustomButton color="primary" shape="rounded-pill" text="Contact Us" customClass="fit-content fw-bold" />
               </div>
             </CCol>
-            <CCol sm="2">
-              <h5 class="fw-bold">Useful Links</h5>
+            <CCol sm="2" class="mt-3">
+              <h6 class="fw-bold">Useful Links</h6>
               <div class="useful-links d-flex flex-column">
                 <router-link to="#">Marketplace</router-link>
                 <router-link to="#">kindergarten</router-link>
@@ -52,8 +52,8 @@
                 <router-link to="#">Privacy Policy</router-link>
               </div>
             </CCol>
-            <CCol sm="2">
-              <h5 class="fw-bold">Our Company</h5>
+            <CCol sm="2" class="mt-3">
+              <h6 class="fw-bold">Our Company</h6>
               <div class="useful-links d-flex flex-column">
                 <router-link to="#">Contact Us</router-link>
                 <router-link to="#">Become Teacher</router-link>
@@ -64,8 +64,8 @@
                 <router-link to="#">Contact</router-link>
               </div>
             </CCol>
-            <CCol sm="4">
-              <h5 class="fw-bold">Get Contact</h5>
+            <CCol sm="4" class="mt-3">
+              <h6 class="fw-bold">Get Contact</h6>
               <div class="useful-links d-flex flex-column">
                 <p c>Phone: <a href="tel:+254716002152">(+254) 71-600-2152</a> </p>
                 <p>E-mail: <a href="mailto:mikethecoder12@gmail.com">mikethecoder12@gmail.com</a> </p>
@@ -83,9 +83,9 @@
           </CRow>
         </CContainer>
       </CFooter>
-      <CFooter>
+      <CFooter >
        <CContainer flui3>
-          <CRow>
+          <CRow >
             <CCol sm="6">
                 <div>
                   <CLink>SkillLink</CLink>
@@ -93,11 +93,11 @@
                 </div>
             </CCol>
              <CCol sm="6">
-                <div class="d-flex gap-3">
+                <div class="d-flex gap-1">
                   <p href="#" :style="{ borderRight: '1px solid #ccc' }"> <a href="#" class="mx-3">Terms of service</a></p>
                   <p href="#" :style="{ borderRight: '1px solid #ccc' }"><a href="#" class="mx-3">Privacy Policy</a></p>
                   <p href="#" :style="{ borderRight: '1px solid #ccc' }"><a href="#" class="mx-3">Subscription</a></p>
-                  <p><a href="#">Login & Register</a></p>
+                  <p><a href="#" class="mx-3">Login & Register</a></p>
                 </div>
             </CCol>
           </CRow>
@@ -129,11 +129,12 @@
       text-decoration: none;
       color: rgb(107, 115, 133);
       margin-top: 10px;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 25px;
     }
     p{
       color: rgb(107, 115, 133);
+      font-size: 14px;
     }
 
     a:hover {

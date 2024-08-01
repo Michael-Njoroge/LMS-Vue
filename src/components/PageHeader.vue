@@ -15,22 +15,22 @@
         <div class="collapse navbar-collapse" id="nav-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Home</a>
+              <router-link class="nav-link text-dark" to="/">Home</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Courses</a>
+              <router-link class="nav-link text-dark" to="#">Courses</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Tutorials</a>
+              <router-link class="nav-link text-dark" to="#">Tutorials</router-link>
             </li>
              <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Tutorials</a>
+              <router-link class="nav-link text-dark" to="#">Tutorials</router-link>
             </li>
              <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Tutorials</a>
+              <router-link class="nav-link text-dark" to="#">Tutorials</router-link>
             </li>
              <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Tutorials</a>
+              <router-link class="nav-link text-dark" to="#">Tutorials</router-link>
             </li>
           </ul>
           <form class="d-flex">
@@ -51,11 +51,11 @@
             </div>
             <div class="nav-item dropdown">
               <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <em>Michael</em>
+                Account
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><router-link class="dropdown-item text-dark" to="/">Profile</router-link></li>
-                <li><router-link class="dropdown-item text-dark" to="/login">Sign Out</router-link></li>
+                <li><router-link class="dropdown-item text-dark" to="/login">Sign In</router-link></li>
+                <li><router-link class="dropdown-item text-dark" to="/signup">Sign Up</router-link></li>
               </ul>
             </div>
           </div>
