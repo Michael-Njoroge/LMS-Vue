@@ -6,6 +6,7 @@ import Reset from "@/views/ResetPassword.vue";
 import HomePage from "@/views/HomePage.vue";
 import Terms from "@/views/TermsAndConditions.vue";
 import Privacy from "@/views/PrivacyPolicy.vue";
+import Courses from "@/views/CoursesPage.vue";
 
 const routes = [
   {
@@ -48,6 +49,12 @@ const routes = [
     path: "/privacy-policy",
     name: "Privacy",
     component: Privacy,
+  },
+
+  {
+    path: "/courses",
+    name: "Courses",
+    component: Courses,
   },
 ];
 

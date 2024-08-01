@@ -18,7 +18,7 @@
               <router-link class="nav-link text-dark" to="/">Home</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link text-dark" to="#">Courses</router-link>
+              <router-link class="nav-link text-dark" to="courses">Courses</router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link text-dark" to="#">Tutorials</router-link>
