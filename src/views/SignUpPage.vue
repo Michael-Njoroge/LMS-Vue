@@ -58,7 +58,14 @@
                 type="email"
                 required
               />
-              <div class="col-md-6">
+              <CustomInput
+                v-model="data.profession"
+                icon="person"
+                feedbackInvalid="Profession is required"
+                placeholder="Profession "
+                type="text"
+                required
+              />
                 <CustomInput
                   v-model="data.password"
                   icon="lock"
@@ -67,17 +74,6 @@
                   type="password"
                   required
                 />
-              </div>
-              <div class="col-md-6">
-                <CustomInput
-                  v-model="data.retypePassword"
-                  icon="lock"
-                  feedbackInvalid="Passwords do not match"
-                  placeholder="Confirm Password"
-                  type="password"
-                  required
-                />
-              </div>
                 <div class="d-flex align-items-center mt-3">
                   <CFormCheck
                     id="termsAndConditions"
@@ -114,6 +110,9 @@ import CustomInput from '@/components/CustomInput.vue';
 import CustomButton from '@/components/CustomButton.vue';
 import { CForm, CFormCheck } from '@coreui/vue';
 import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const data = ref({
   firstname: '',
@@ -121,7 +120,7 @@ const data = ref({
   mobile: '',
   email: '',
   password: '',
-  retypePassword: '',
+  profession:'',
   agreed: false
 });
 const validatedCustom01 = ref(false);
@@ -132,20 +131,22 @@ const isEmpty = computed(() => {
     data.value.lastname &&
     data.value.mobile &&
     data.value.email &&
-    data.value.password &&
-    data.value.retypePassword &&
-    data.value.password === data.value.retypePassword &&
-    data.value.agreed
+    data.value.profession &&
+    data.value.password
   );
 });
 
-const handleRegister = (event) => {
+const handleRegister = async(event) => {
   event.preventDefault();
   const form = event.currentTarget;
   if (!form.checkValidity()) {
     event.stopPropagation();
   } else {
-    alert(JSON.stringify(data.value));
+     try {
+        await store.dispatch('auth/register', data.value);
+      } catch (error) {
+        console.error('Login failed:', error);
+    }
   }
   validatedCustom01.value = true;
 };
