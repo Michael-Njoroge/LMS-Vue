@@ -8,6 +8,7 @@ import Terms from "@/views/TermsAndConditions.vue";
 import Privacy from "@/views/PrivacyPolicy.vue";
 import Courses from "@/views/CoursesPage.vue";
 import Admin from "@/views/AdminDashboard.vue";
+import { useStore } from 'vuex';
 
 const routes = [
   {
@@ -62,12 +63,24 @@ const routes = [
     path: "/admin",
     name: "Admin",
     component: Admin,
+    meta: { requiresAuth: true }
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const store = useStore();
+  const isLoggedIn = store.getters['auth/isLoggedIn'];
+
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
 });
 
 export default router;
