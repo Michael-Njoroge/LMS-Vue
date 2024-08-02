@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mb-4">
     <div class="row">
       <nav class="navbar navbar-expand-lg navbar-dark px-2 me-4" :style="{backgroundColor:'#f3f4f7'}">
         <div class="col-2 px-4">
@@ -21,7 +21,7 @@
               <router-link class="nav-link text-dark" to="courses">Courses</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link text-dark" to="#">Tutorials</router-link>
+              <router-link class="nav-link text-dark" to="/admin">Admin</router-link>
             </li>
              <li class="nav-item">
               <router-link class="nav-link text-dark" to="#">Tutorials</router-link>
@@ -44,8 +44,11 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
                 <li><a class="dropdown-item text-dark" href="#">EN</a></li>
+                <li class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-dark" href="#">ES</a></li>
+                <li class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-dark" href="#">RU</a></li>
+                <li class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-dark" href="#">FA</a></li>
               </ul>
             </div>
@@ -55,6 +58,7 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 <li><router-link class="dropdown-item text-dark" to="/login">Sign In</router-link></li>
+                <li class="dropdown-divider"></li>
                 <li><router-link class="dropdown-item text-dark" to="/signup">Sign Up</router-link></li>
               </ul>
             </div>
@@ -83,5 +87,14 @@ import { CAvatar} from '@coreui/vue';
 }
 .dropdown-menu {
   width: 50px; 
+}
+
+.dropdown-menu{
+  width: 10px!important;
+  margin-top: 12px!important;
+  font-weight: bold!important;
+  line-height: 15px;
+  font-size: 15px;
+  border-radius: 0;
 }
 </style>

@@ -43,15 +43,17 @@
                 required
               />
               <div class="d-flex justify-content-between flex-grow-1 mt-3">
-                <CFormCheck id="flexCheckDefaultVModel" label="Remember Me" v-model="data.checked" />
+                <CFormCheck id="flexCheckDefaultVModel" label="Remember Me" v-model="data.remember" />
                 <router-link to="forgot-password" class="text-right">Lost your password?</router-link>
               </div>
               <CustomButton 
-                :disabled="isFormInvalid" 
-                :style="{ cursor: isFormInvalid ? 'not-allowed' : 'pointer' }" 
+                :disabled="isFormInvalid || isLoading" 
+                :style="{ cursor: isFormInvalid || isLoading ? 'not-allowed' : 'pointer' }" 
                 type="submit" 
-                color="success" 
-                text="Continue with email" 
+                color="success"
+                text="Continue with email"
+                loadingText="Please wait..."
+                :isLoading="isLoading"
                 customClass="text-white w-100 fs-6" 
                 shape="rounded-1">
               </CustomButton>
@@ -68,28 +70,50 @@
 import CustomInput from '@/components/CustomInput.vue';
 import CustomButton from '@/components/CustomButton.vue';
 import { CForm, CFormCheck } from '@coreui/vue';
-import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { ref, computed,watch } from 'vue';
+
+const store = useStore();
+const router = useRouter();
 
 const data = ref({
-  firstname: '',
-  lastname: '',
-  mobile: '',
   email: '',
-  password: ''
+  password: '',
+  remember: false
 });
 const validatedCustom01 = ref(false);
 
-const isFormInvalid = computed(() => {
-  return data.value.email === '' || data.value.password === '';
-});
+const user = computed(() => store.getters['auth/user']);
+const role = computed(() => user?.value?.role?.role_name);
+const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
+const isLoading = computed(() => store.getters['auth/isLoading']);
+const isFormInvalid = computed(() => data.value.email === '' || data.value.password === '');
 
-const handleLogin = (event) => {
+// watchEffect(() => {
+//   console.log("user", user?.value?.role?.role_name);
+// });
+watch([isLoggedIn, role], ([loggedIn, userRole]) => {
+  if (loggedIn) {
+    if (userRole === 'admin') {
+      router.push('/admin');
+    } else {
+      router.push('/');
+    }
+  }
+}, { immediate: true });
+
+const handleLogin = async(event) => {
   event.preventDefault();
   const form = event.currentTarget;
   if (!form.checkValidity()) {
     event.stopPropagation();
   } else {
-    alert(JSON.stringify(data.value));
+    try {
+        await store.dispatch('auth/login', data.value);
+      } catch (error) {
+        console.error('Login failed:', error);
+    }
   }
   validatedCustom01.value = true;
 };
@@ -104,5 +128,8 @@ a {
 a:hover {
   text-decoration: underline;
   text-transform: initial;
+}
+.container-fluid {
+  margin-top: 3rem !important;
 }
 </style>

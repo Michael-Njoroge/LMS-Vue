@@ -7,6 +7,7 @@ import HomePage from "@/views/HomePage.vue";
 import Terms from "@/views/TermsAndConditions.vue";
 import Privacy from "@/views/PrivacyPolicy.vue";
 import Courses from "@/views/CoursesPage.vue";
+import Admin from "@/views/AdminDashboard.vue";
 
 const routes = [
   {
@@ -55,6 +56,12 @@ const routes = [
     path: "/courses",
     name: "Courses",
     component: Courses,
+  },
+
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
   },
 ];
 

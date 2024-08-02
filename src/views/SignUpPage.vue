@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-5 mx-auto">
-        <div class="card my-4 px-2">
+        <div class="card my-5 py-2">
           <div class="card-body">
             <h5 class="card-title text-center fw-bold">Register A New Account</h5>
             <div class="d-flex justify-content-center align-items-center gap-4 mt-3">
@@ -160,5 +160,8 @@ a {
 a:hover {
   text-decoration: underline;
   text-transform: initial;
+}
+.container-fluid{
+  margin-top: 2rem!important;
 }
 </style>

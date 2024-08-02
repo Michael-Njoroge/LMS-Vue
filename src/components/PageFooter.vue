@@ -88,7 +88,7 @@
           <CRow >
             <CCol sm="6">
                 <div>
-                  <CLink>SkillLink</CLink>
+                  <router-link to="/">SkillLink</router-link>
                   <span class="mx-3">&copy; 2024. &nbsp;&nbsp; All rights reserved by <a href="https://github.com/Michael-Njoroge" target="_blank"> <strong>Michael(Dev)</strong></a> </span>
                 </div>
             </CCol>
@@ -114,7 +114,7 @@
     CAvatar,
     CInputGroup,
     CFormInput,
-    CButton
+    CButton,
   } from '@coreui/vue';
   import CustomButton from '@/components/CustomButton.vue';
 
