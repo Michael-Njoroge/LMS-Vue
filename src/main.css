@@ -4,7 +4,13 @@ body{
 	background-color: #ecf0f5 !important;
 	font-family: "Roboto", sans-serif;
 }
-
-
+.toast-custom .Toastify__toast {
+  min-height: auto;  
+  padding: 2px;  
+}
+.toast-custom {
+  font-size: 12px; /* Adjust the font size */
+  padding: 3px; /* Adjust the padding */
+}
 
 

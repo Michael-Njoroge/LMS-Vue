@@ -1,5 +1,5 @@
 <template>
-  <CCard :style="style" :class="customClass">
+  <CCard :style="style" :class="['custom-card', customClass]">
     <CCardImage orientation="top" :src="imageSrc" />
     <CCardBody>
       <CCardTitle>{{ cardTitle }}</CCardTitle>
@@ -54,5 +54,11 @@ const handleSettings = () => {
 </script>
 
 <style scoped>
-/* Add your card styles here */
+.custom-card {
+  height: 100%;
+}
+
+.custom-card .ccard-body {
+  flex: 1;
+}
 </style>

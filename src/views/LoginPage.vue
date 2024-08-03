@@ -94,7 +94,7 @@ const isFormInvalid = computed(() => data.value.email === '' || data.value.passw
 //   console.log("user", user?.value?.role?.role_name);
 // });
 watch([isLoggedIn, role], ([loggedIn, userRole]) => {
-  if (loggedIn) {
+  if (loggedIn && router.currentRoute.value.name !== 'LoginPage') {
     if (userRole === 'admin') {
       router.push('/admin');
     } else {
@@ -103,20 +103,29 @@ watch([isLoggedIn, role], ([loggedIn, userRole]) => {
   }
 }, { immediate: true });
 
-const handleLogin = async(event) => {
+const handleLogin = async (event) => {
   event.preventDefault();
   const form = event.currentTarget;
   if (!form.checkValidity()) {
     event.stopPropagation();
   } else {
     try {
-        await store.dispatch('auth/login', data.value);
-      } catch (error) {
-        console.error('Login failed:', error);
+      await store.dispatch('auth/login', data.value);
+      if (isLoggedIn.value) {
+        const userRole = role.value;
+        if (userRole === 'admin') {
+          router.push('/admin');
+        } else {
+          router.push('/');
+        }
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
     }
   }
   validatedCustom01.value = true;
 };
+
 </script>
 
 <style scoped>

@@ -1,65 +1,70 @@
 <template>
   <div :class="customStyle">
-    <CButton :color="customColor" @click="() => { visibleLiveDemo = true }">{{openButton}}</CButton>
     <CModal 
-      :visible="visibleLiveDemo"
-      @close="() => { visibleLiveDemo = false }"
+      :visible="visible"
+      @close="closeModal"
       aria-labelledby="LiveDemoExampleLabel"
     >
       <CModalHeader>
         <CModalTitle id="LiveDemoExampleLabel">{{modalTitle}}</CModalTitle>
       </CModalHeader>
-      <CModalBody>{{modalBody}}</CModalBody>
+      <CModalBody><slot></slot></CModalBody>
       <CModalFooter>
-        <CButton :color ="colorCancel" @click="() => { visibleLiveDemo = false }">
+<!--         <CButton style="text-transform:initial ;" :color ="colorCancel" @click="closeModal">
           Close
-        </CButton>
-        <CButton :color ="colorSave" >{{buttonText}}</CButton>
+        </CButton> -->
+        <CButton :disabled="disabled" style="text-transform:initial ;" :type="type" :color ="colorSave" @click="saveChanges">{{buttonText}}</CButton>
       </CModalFooter>
     </CModal>
   </div>
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 import { CModal, CModalHeader, CModalBody, CModalTitle, CButton, CModalFooter} from '@coreui/vue';
 
 defineProps({
+  visible: {
+    type: Boolean,
+    required: true
+  },
   modalTitle: {
     type: String,
-    default: 'Modal Title'
-  },
-  modalBody: {
-    type: String,
-    default: 'Modal Body'
+    default: 'Modal Title',
   },
   colorCancel: {
     type: String,
-    default: 'danger'
+    default: 'danger',
   },
   colorSave: {
     type: String,
-    default: 'primary'
+    default: 'primary',
   },
   buttonText: {
     type: String,
-    default: 'Button'
+    default: 'Save changes',
   },
-  openButton: {
+  type: {
     type: String,
-    default: 'Open Modal'
+    default: 'button',
   },
-  customColor: {
+  disabled: {
     type: String,
-    default: 'primary'
-  },
-  customStyle: {
-    type: String,
-    default:''
+    default: 'false',
   }
 });
 
-const visibleLiveDemo = ref(false)
+const emit = defineEmits(['update:visible', 'save']);
+
+const closeModal = () => {
+  emit('update:visible', false);
+};
+
+const saveChanges = (event) => {
+  emit('save', event);
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

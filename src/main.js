@@ -19,13 +19,14 @@ app.use(store);
 app.use(router);
 
 app.use(Toast, {
-  position: POSITION.TOP_RIGHT,
+  position: POSITION.BOTTOM_RIGHT,
   autoClose: 5000,
   hideProgressBar: false,
   closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
+  pauseOnHover: false,
+  draggable: false,
   progress: undefined,
+  toastClassName: 'toast-custom'
 });
 
 if (process.env.NODE_ENV === 'development') {

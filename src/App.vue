@@ -1,25 +1,71 @@
 <template>
   <div class="layout">
-      <PageHeader v-if="$route.name !== 'Admin'"/>
-      <AdminHeader v-if="$route.name === 'Admin'" class="admin-header"/>
-    <div :class="{'content-wrapper' : $route.name === 'Admin'}">
-      <aside v-if="$route.name === 'Admin'" class="admin-sidebar">
-        <AdminSidebar />
+    <PageHeader v-if="!isAdminRoute"/>
+    <AdminHeader v-if="isAdminRoute" class="admin-header"/>
+    <div class="main-content">
+      <aside v-if="isAdminRoute" class="admin-sidebar">
+        <AdminSidebar :menu="adminMenu"/>
       </aside>
-        <router-view :class="{ 'content-container': $route.name === 'Admin' }"/>
+      <div :class="{'admin-layout': isAdminRoute, 'content-container': true}">
+        <router-view />
+      </div>
     </div>
-      <PageFooter v-if="$route.name !== 'Admin'" />
-      <AdminFooter class="adfooter" v-if="$route.name === 'Admin'" />
+    <PageFooter v-if="!isAdminRoute"/>
+    <AdminFooter class="adfooter" v-if="isAdminRoute"/>
   </div>
 </template>
 
 <script setup lang="js">
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import PageFooter from "@/components/PageFooter.vue";
 import PageHeader from "@/components/PageHeader.vue";
 import AdminFooter from "@/components/AdminFooter.vue";
 import AdminHeader from "@/components/AdminHeader.vue";
 import AdminSidebar from "@/components/AdminSidebar.vue";
+
+const route = useRoute();
+
+// Determine if the current route requires admin privileges
+const isAdminRoute = computed(() => {
+  const adminRoutes = ['Admin', 'Users', 'TutorialCategory', 'Tutorials'];
+  return adminRoutes.includes(route.name);
+});
+
+const adminMenu = [
+  {
+    header: 'Skill Link',
+  },
+  {
+    href: '/admin',
+    title: 'Dashboard',
+    icon: 'fa fa-home',
+  },
+  {
+    title: 'Users',
+    icon: 'fa fa-users',
+    href: '/admin/users',
+  },
+  {
+    title: 'Tutorials',
+    icon: 'fa fa-chalkboard-teacher',
+    child: [
+      {
+        href: '/admin/tutorials-category',
+        icon: 'fa fa-th-list',
+        title: 'Tutorial Category',
+      },
+      {
+        href: '/admin/tutorials',
+        icon: 'fa fa-book',
+        title: 'All Tutorials',
+      },
+
+    ],
+  },
+];
 </script>
+
 
 <style>
 html, body {
@@ -34,6 +80,10 @@ html, body {
   min-height: 100vh;
 }
 
+.main-content {
+  display: flex;
+  flex: 1;
+}
 
 .admin-header {
   background-color: #f8f9fa;
@@ -53,40 +103,46 @@ html, body {
   overflow: auto;  
 }
 
-.adfooter {
+.adfooter, .PageFooter {
   background-color: #f8f9fa;
   box-sizing: border-box;
   z-index: 1; 
-  margin-left: 200px; 
   position: relative; 
+  margin-left: 200px; 
 }
-.vsm--toggle-btn{
+
+.vsm--toggle-btn {
     display: none!important;
     background-color: transparent;
 }
+
 .vsm--menu {
   width: auto !important;
 }
+
 .vsm--link_active {
    background-color: transparent!important;
 }
+
 .vsm--link_active .vsm--icon {
-      color: #6261cc!important;
+  color: #6261cc!important;
 }
 
-.vsm--link  .vsm--icon:hover {
-      color: #6261cc!important;
+.vsm--link .vsm--icon:hover {
+  color: #6261cc!important;
 }
 
-.v-sidebar-menu{
-    background-color: #f0f0f0!important;
+.v-sidebar-menu {
+  background-color: #f0f0f0!important;
 }
-.vsm--title{
-    color: #333333!important;
+
+.vsm--title {
+  color: #333333!important;
 }
- .vsm--icon {
-    background-color: transparent!important;
-    color: #333333!important;
+
+.vsm--icon {
+  background-color: transparent!important;
+  color: #333333!important;
 }
 
 .vsm--link_active .vsm--title span {
@@ -94,35 +150,35 @@ html, body {
 }
 
 .vsm--link:hover {
-      color: #6261cc!important;
+  color: #6261cc!important;
 }
 
 .vsm--link:hover .vsm--icon {
   color: #6261cc !important; 
 }
 
-.vsm--link .vsm--title:hover{
-     color: #6261cc !important; 
+.vsm--link .vsm--title:hover {
+  color: #6261cc !important; 
 }
 
-.v-sidebar-menu .vsm--dropdown{
-    background-color: transparent!important;
-    text-align: center;
+.v-sidebar-menu .vsm--dropdown {
+  background-color: transparent!important;
 }
+
 .vsm--header {
-    color: #333333!important;
-    text-align: center;
-    margin-top: 8px;
-    cursor: pointer;
-    font-size: 18px!important;
+  color: #333333!important;
+  text-align: center;
+  margin-top: 8px;
+  cursor: pointer;
+  font-size: 18px!important;
 }
+
 .vsm--link:hover {
   background-color: transparent !important; 
   color: #007bff !important; 
 }
 
-.v-sidebar-menu .vsm--link{
-    padding: 5px 7px!important;
+.v-sidebar-menu .vsm--link {
+  padding: 5px 7px!important;
 }
-
 </style>

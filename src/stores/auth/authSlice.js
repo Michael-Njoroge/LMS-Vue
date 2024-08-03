@@ -6,9 +6,10 @@ const toast = useToast();
 export const auth = {
   namespaced: true,
   state() {
+    const user = JSON.parse(localStorage.getItem('user')) || null;
     return {
-      isLoggedIn: false,
-      user: null,
+      isLoggedIn: !!user,
+      user: user,
       isLoading: false,
       isError: false,
       isSuccess: false,
@@ -17,6 +18,7 @@ export const auth = {
   },
   getters: {
     isLoggedIn: (state) => state.isLoggedIn,
+    isAdmin: (state) => state?.user && state?.user?.role?.role_name === 'admin',
     user: (state) => state.user,
     isLoading: (state) => state.isLoading,
     isError: (state) => state.isError,
@@ -48,10 +50,21 @@ export const auth = {
     logout(state) {
       state.isLoggedIn = false;
       state.user = null;
+      localStorage.removeItem('user');
+    },
+    initialize(state) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        state.isLoggedIn = true;
+        state.user = user;
+      }
     },
   },
 
   actions: {
+    async initAuth({ commit }) {
+      commit('initialize');
+    },
     async register({ commit }, data) {
       commit('setLoading', true);
       commit('setError', false);
@@ -96,7 +109,8 @@ export const auth = {
           lastname: response.data.data?.lastname,
           mobile: response.data.data?.mobile,
           email: response.data.data?.email,
-          token: response.data.data?.token
+          role: response.data.data?.role?.role_name,
+          token: response.data.data?.token,
         }))
       } catch (error) {
         commit('setError', true);
