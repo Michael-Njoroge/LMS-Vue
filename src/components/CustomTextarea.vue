@@ -8,6 +8,7 @@
       :cols="cols"
       :name="name"
       :placeholder="placeholder"
+      :class="customClass"
     ></CFormTextarea>
   </CForm>
 </template>
@@ -31,6 +32,10 @@ defineProps({
     type: String,
     default: 'Enter your text here...'
   },
+  customClass: {
+    type: String,
+    default: ''
+  }
 });
 
 </script>

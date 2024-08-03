@@ -1,6 +1,6 @@
 <template>
-  <div :class="customClass">
-     <CFormSelect :label="label" :name="name" :id="id">
+  <div  >
+     <CFormSelect :class="customClass" :label="label" :name="name" :id="id">
       <option disabled selected>{{disabledOption}}</option>
       <option v-for="option in options" :key="option.value" :value="option.value">
           {{ option.text }}
