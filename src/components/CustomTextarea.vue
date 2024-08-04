@@ -4,12 +4,13 @@
       :id="id"
       :label="label"
       :rows="rows"
-      :text="text"
       :cols="cols"
       :name="name"
       :placeholder="placeholder"
       :class="customClass"
-    ></CFormTextarea>
+      :feedbackInvalid="feedbackInvalid"
+      :required="required"
+    ><slot></slot></CFormTextarea>
   </CForm>
 </template>
 <script setup>
@@ -35,7 +36,15 @@ defineProps({
   customClass: {
     type: String,
     default: ''
-  }
+  },
+  feedbackInvalid: {
+    type: String,
+    default: 'Please provide a valid input.',
+  },
+  required: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 </script>

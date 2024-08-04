@@ -6,7 +6,7 @@
       <aside v-if="isAdminRoute" class="admin-sidebar">
         <AdminSidebar :menu="adminMenu"/>
       </aside>
-      <div :class="{'admin-layout': isAdminRoute, 'content-container': true}">
+      <div :class="{'content-container': isAdminRoute, 'regular-content': !isAdminRoute}">
         <router-view />
       </div>
     </div>
@@ -63,6 +63,57 @@ const adminMenu = [
 
     ],
   },
+  {
+    title: 'Projects',
+    icon: 'fa fa-chalkboard-teacher',
+    child: [
+      {
+        href: '/admin/project-category',
+        icon: 'fa fa-th-list',
+        title: 'Project Category',
+      },
+      {
+        href: '/admin/project',
+        icon: 'fa fa-book',
+        title: 'All Projects',
+      },
+
+    ],
+  },
+  {
+    title: 'Documentations',
+    icon: 'fa fa-chalkboard-teacher',
+    child: [
+      {
+        href: '/admin/documentation-category',
+        icon: 'fa fa-th-list',
+        title: 'Documentation Category',
+      },
+      {
+        href: '/admin/documentation',
+        icon: 'fa fa-book',
+        title: 'All Documentations',
+      },
+
+    ],
+  },
+  {
+    title: 'Videos',
+    icon: 'fa fa-chalkboard-teacher',
+    child: [
+      {
+        href: '/admin/video-category',
+        icon: 'fa fa-th-list',
+        title: 'Video Category',
+      },
+      {
+        href: '/admin/Video',
+        icon: 'fa fa-book',
+        title: 'All Videos',
+      },
+
+    ],
+  },
 ];
 </script>
 
@@ -102,6 +153,13 @@ html, body {
   padding: 20px;
   overflow: auto;  
 }
+
+.regular-content {
+  flex: 1;
+  padding: 20px;
+  overflow: auto;  
+}
+
 
 .adfooter, .PageFooter {
   background-color: #f8f9fa;

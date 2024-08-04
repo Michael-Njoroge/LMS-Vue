@@ -22,9 +22,9 @@
        <div class="d-flex flex-row gap-4 align-items-center justify-content-center">
          <h6 class="mt-2"> Welcome {{admin?.firstname}}</h6>
           <CDropdown variant="nav-item">
-            <CDropdownToggle class="no-arrow" color="secondary"><CAvatar size="md" src="/images/user.png"></CAvatar></CDropdownToggle>
+            <CDropdownToggle class="no-arrow" color="secondary" href="javascript:void(0)"><CAvatar size="md" src="/images/user.png"></CAvatar></CDropdownToggle>
             <CDropdownMenu class="custom-dropdown-menu">
-              <CDropdownItem href="#">Profile</CDropdownItem>
+              <CDropdownItem href="javascript:void(0)">Profile</CDropdownItem>
               <CDropdownDivider />
               <CDropdownItem style="cursor: pointer;" @click="handleLogout">Logout</CDropdownItem>
             </CDropdownMenu>

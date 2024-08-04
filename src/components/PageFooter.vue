@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper d-flex flex-column  ">
-      <CFooter class="mt-auto">
+      <CFooter class="mt-4">
         <CContainer flui3>
           <CRow>
             <CCol sm="4">

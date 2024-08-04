@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-5 mx-auto">
-        <div class="card my-4 px-2">
+      <div class="col-5 mx-auto mt-4">
+        <div class="card px-2">
           <div class="card-body">
             <div class="d-flex align-items-center flex-row">
               <span class="material-icons fs-5">arrow_back</span>

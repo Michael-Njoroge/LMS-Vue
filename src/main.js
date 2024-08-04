@@ -8,6 +8,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'mdb-vue-ui-kit/css/mdb.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@coreui/coreui/dist/css/coreui.min.css';
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.bubble.css";
+import "quill/dist/quill.snow.css";
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import Toast, { POSITION } from 'vue-toastification';

@@ -1,4 +1,10 @@
-import { getTutorials as getTutorialsService, getTutorial as getTutorialService } from './tutorialService';
+import { 
+  getTutorials as getTutorialsService,
+  getTutorial as getTutorialService, 
+  addTutorial as addTutorialService, 
+  updateTutorial as updateTutorialService, 
+  deleteTutorial as deleteTutorialService, 
+} from './tutorialService';
 import { useToast } from 'vue-toastification';
 
 const toast = useToast();
@@ -43,6 +49,15 @@ export const tutorials = {
      getTutorial(state, getTutorial) {
       state.getTutorial = getTutorial;
     },
+    addTutorial(state, addTutorial) {
+      state.addTutorial = addTutorial;
+    },
+    deleteTutorial(state, deleteTutorial) {
+      state.deleteTutorial = deleteTutorial;
+    },
+    updateTutorial(state, updateTutorial) {
+      state.updateTutorial = updateTutorial;
+    },
   },
 
   actions: {
@@ -65,6 +80,48 @@ export const tutorials = {
         commit('setLoading', false);
       }
     },
+
+     async addTutorial({ commit },data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await addTutorialService(data);
+        const addTutorial = response.data.data;
+        commit('addTutorial', addTutorial);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Tutorial added successfully');
+        toast.success(response?.data?.message || 'Tutorial added successfully');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to add tutorial');
+        toast.error(error.response?.data?.message || 'Failed to add tutorial');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
+    async updateTutorial({ commit },data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await updateTutorialService(data);
+        const updateTutorial = response.data.data;
+        commit('updateTutorial', updateTutorial);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Tutorial updated successfully');
+        toast.success(response?.data?.message || 'Tutorial updated successfully');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to update tutorial');
+        toast.error(error.response?.data?.message || 'Failed to update tutorial');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
+
     async getTutorial({ commit },data) {
       commit('setLoading', true);
       commit('setError', false);
@@ -80,6 +137,26 @@ export const tutorials = {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Failed to get tutorial');
         toast.error(error.response?.data?.message || 'Failed to get tutorial');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
+    async deleteTutorial({ commit },data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await deleteTutorialService(data);
+        const deleteTutorial = response.data.data;
+        commit('deleteTutorial', deleteTutorial);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Tutorial deleted successfully');
+        toast.success(response?.data?.message || 'Tutorial deleted successfully');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to delete tutorial');
+        toast.error(error.response?.data?.message || 'Failed to delete tutorial');
       } finally {
         commit('setLoading', false);
       }

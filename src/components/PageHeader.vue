@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-4">
+  <div class="container my-4">
     <div class="row">
       <nav class="navbar navbar-expand-lg navbar-dark px-2 me-4" :style="{backgroundColor:'#f3f4f7'}">
         <div class="col-2 px-4">

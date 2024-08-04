@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-5 mx-auto">
-        <div class="card my-4 px-2">
+        <div class="card px-2">
           <div class="card-body">
             <h5 class="card-title text-center fw-bold">Log in to your account</h5>
             <div class="d-flex justify-content-center align-items-center gap-4 mt-3">
