@@ -56,7 +56,6 @@ export const users = {
         commit('getUsers', users);
         commit('setSuccess', true);
         commit('setMessage', response?.data?.message || 'Users  retrieved successfully');
-        toast.success(response?.data?.message || 'Users  retrieved successfully');
       } catch (error) {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Failed to get users');
@@ -75,7 +74,6 @@ export const users = {
         commit('getUser', user);
         commit('setSuccess', true);
         commit('setMessage', response?.data?.message || 'User  retrieved successfully');
-        toast.success(response?.data?.message || 'User  retrieved successfully');
       } catch (error) {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Failed to get user');

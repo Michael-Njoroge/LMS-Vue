@@ -4,6 +4,7 @@
       @close="closeModal"
       aria-labelledby="LiveDemoExampleLabel"
       :style="modalStyle"
+      backdrop="static"
     >
       <CModalHeader>
         <CModalTitle id="LiveDemoExampleLabel">{{modalTitle}}</CModalTitle>

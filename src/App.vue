@@ -39,11 +39,11 @@ const adminMenu = [
   {
     href: '/admin',
     title: 'Dashboard',
-    icon: 'fa fa-home',
+    icon: 'fa fa-tachometer-alt',
   },
   {
     title: 'Users',
-    icon: 'fa fa-users',
+    icon: 'fa fa-user-friends',
     href: '/admin/users',
   },
   {
@@ -52,69 +52,66 @@ const adminMenu = [
     child: [
       {
         href: '/admin/tutorials-category',
-        icon: 'fa fa-th-list',
+        icon: 'fa fa-folder-open',
         title: 'Tutorial Category',
       },
       {
         href: '/admin/tutorials',
-        icon: 'fa fa-book',
+        icon: 'fa fa-book-open',
         title: 'All Tutorials',
       },
-
     ],
   },
   {
     title: 'Projects',
-    icon: 'fa fa-chalkboard-teacher',
+    icon: 'fa fa-project-diagram',
     child: [
       {
         href: '/admin/project-category',
-        icon: 'fa fa-th-list',
+        icon: 'fa fa-folder-open',
         title: 'Project Category',
       },
       {
         href: '/admin/project',
-        icon: 'fa fa-book',
+        icon: 'fa fa-tasks',
         title: 'All Projects',
       },
-
     ],
   },
   {
     title: 'Documentations',
-    icon: 'fa fa-chalkboard-teacher',
+    icon: 'fa fa-file-alt',
     child: [
       {
         href: '/admin/documentation-category',
-        icon: 'fa fa-th-list',
+        icon: 'fa fa-folder-open',
         title: 'Documentation Category',
       },
       {
         href: '/admin/documentation',
-        icon: 'fa fa-book',
+        icon: 'fa fa-file-alt',
         title: 'All Documentations',
       },
-
     ],
   },
   {
     title: 'Videos',
-    icon: 'fa fa-chalkboard-teacher',
+    icon: 'fa fa-video',
     child: [
       {
         href: '/admin/video-category',
-        icon: 'fa fa-th-list',
+        icon: 'fa fa-folder-open',
         title: 'Video Category',
       },
       {
-        href: '/admin/Video',
-        icon: 'fa fa-book',
+        href: '/admin/video',
+        icon: 'fa fa-video',
         title: 'All Videos',
       },
-
     ],
   },
 ];
+
 </script>
 
 

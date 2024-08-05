@@ -1,35 +1,24 @@
 <template>
   <CNavbar expand="lg" color-scheme="light" class="bg-light">
-    <CContainer fluid>
-        <CNavbarNav>
-          <CNavItem>
-            <CNavLink href="#" active>
-              Home
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">Link</CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#" disabled>
-              Disabled
-            </CNavLink>
-          </CNavItem>
-        </CNavbarNav>
-        <CForm class="d-flex">
-          <CFormInput type="search" class="me-2" placeholder="Search"/>
+    <CContainer fluid class="navbar-container">
+      <div class="d-flexi align-items-center justify-content-between w-100 gap-3">
+        <div class="user-info">
+          <h6 class="mt-2">Welcome {{ admin?.firstname }}</h6>
+        </div>
+        <CForm class="search-form">
+          <CFormInput type="search" class="" placeholder="Search"/>
         </CForm>
-       <div class="d-flex flex-row gap-4 align-items-center justify-content-center">
-         <h6 class="mt-2"> Welcome {{admin?.firstname}}</h6>
-          <CDropdown variant="nav-item">
-            <CDropdownToggle class="no-arrow" color="secondary" href="javascript:void(0)"><CAvatar size="md" src="/images/user.png"></CAvatar></CDropdownToggle>
-            <CDropdownMenu class="custom-dropdown-menu">
-              <CDropdownItem href="javascript:void(0)">Profile</CDropdownItem>
-              <CDropdownDivider />
-              <CDropdownItem style="cursor: pointer;" @click="handleLogout">Logout</CDropdownItem>
-            </CDropdownMenu>
-          </CDropdown>
-       </div>
+        <CDropdown variant="nav-item">
+          <CDropdownToggle class="no-arrow" color="secondary" href="javascript:void(0)">
+            <CAvatar size="md" src="/images/user.png"></CAvatar>
+          </CDropdownToggle>
+          <CDropdownMenu class="custom-dropdown-menu">
+            <CDropdownItem href="javascript:void(0)">Profile</CDropdownItem>
+            <CDropdownDivider />
+            <CDropdownItem style="cursor: pointer;" @click="handleLogout">Logout</CDropdownItem>
+          </CDropdownMenu>
+        </CDropdown>
+      </div>
     </CContainer>
   </CNavbar>
 </template>
@@ -38,9 +27,6 @@
 import {
   CNavbar,
   CContainer,
-  CNavbarNav,
-  CNavItem,
-  CNavLink,
   CDropdown,
   CDropdownToggle,
   CDropdownMenu,
@@ -52,46 +38,62 @@ import {
 } from '@coreui/vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-const router = useRouter();
 
+const router = useRouter();
 const admin = JSON.parse(localStorage.getItem("user"));
 const store = useStore();
 
-const handleLogout = async() => {
+const handleLogout = async () => {
   try {
     await store.dispatch('auth/logout');
     localStorage.removeItem('user');
     router.push('/');
-    }catch(error){
-      console.log('error',error)
-    }
+  } catch (error) {
+    console.log('error', error);
+  }
 }
-
 </script>
 
 <style>
-.nav-item {
-	padding-right: 20px;
+.navbar-container {
+  display: flex;
+  align-items: center;
+}
+
+.d-flexi {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.user-info {
+  margin-right: auto;
+}
+
+.search-form {
+  flex: 1;
 }
 
 .custom-dropdown-menu {
-  width: 10px!important;
-  margin-top: 8px!important;
+  width: 10px !important;
+  margin-top: 8px !important;
   line-height: 10px;
-  border-radius: 0!important;
+  border-radius: 0 !important;
 }
 
 .no-arrow::after {
-  display: none!important;
+  display: none !important;
 }
 
-.dropdown-item{
-	padding: 5px !important;
-	text-align: center!important;
+.dropdown-item {
+  padding: 5px !important;
+  text-align: center !important;
 }
+
 .dropdown-item:hover {
-	background-color: transparent!important;
-	color: #6261cc !important; 
-	text-decoration: underline;
+  background-color: transparent !important;
+  color: #6261cc !important;
+  text-decoration: underline;
 }
 </style>
