@@ -6,13 +6,13 @@
           <div class="card-body">
             <h5 v-if="!isEmailNotVerified" class="card-title text-center fw-bold">Log in to your account</h5>
             <div v-if="!isEmailNotVerified" class="d-flex justify-content-center align-items-center gap-4 mt-3">
-              <div class="card col-2" style="cursor: pointer;">
+              <div class="card col-2" style="cursor: pointer;" @click="redirectToGoogle">
                 <div class="card-body py-1 d-flex justify-content-center align-items-center">
                   <i class="fab fa-google fs-5" style="color: #db4437;"></i>
                 </div>
               </div>
               <div class="card col-2" style="cursor: pointer;">
-                <div class="card-body py-1 d-flex justify-content-center align-items-center">
+                <div class="card-body py-1 d-flex justify-content-center align-items-center" >
                   <i class="fab fa-github fs-5" style="color: #333;"></i>
                 </div>
               </div>
@@ -103,6 +103,7 @@ const role = computed(() => user?.value?.role?.role_name);
 const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
 const isLoading = computed(() => store.getters['auth/isLoading']);
 const isFormInvalid = computed(() => data.value.email === '' || data.value.password === '');
+const url = computed(() => store.getters['auth/redirectUrl']);
 
 watch([isLoggedIn, role], ([loggedIn, userRole]) => {
   if (loggedIn && router.currentRoute.value.name !== 'LoginPage') {
@@ -151,6 +152,15 @@ const handleResendVerification = async () => {
     isLoading.value = false;
   }
 };
+
+const redirectToGoogle =  async () => {
+  try{
+    await store.dispatch('auth/redirect');
+    window.location.href = url.value
+  }catch(error){
+    console.log("error",error)
+  }
+}
 </script>
 
 <style scoped>
