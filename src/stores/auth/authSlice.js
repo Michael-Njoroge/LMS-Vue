@@ -31,6 +31,7 @@ export const auth = {
     isLoggedIn: (state) => state.isLoggedIn,
     isAdmin: (state) => state.isAdmin,
     redirectUrl: (state) => state.redirectUrl,
+    callback: (state) => state.callback,
     user: (state) => state.user,
     isLoading: (state) => state.isLoading,
     isError: (state) => state.isError,
@@ -78,6 +79,9 @@ export const auth = {
     },
     redirectUrl(state,redirectUrl) {
       state.redirectUrl = redirectUrl;
+    },
+    callback(state,callback) {
+      state.callback = callback;
     },
     initialize(state) {
       const user = JSON.parse(localStorage.getItem('user'));

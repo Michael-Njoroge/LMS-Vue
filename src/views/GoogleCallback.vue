@@ -18,7 +18,7 @@ onMounted(async () => {
   
   if (code) {
     try {
-      await store.dispatch('auth/handleGoogleCallback', code);
+      await store.dispatch('auth/callback', code);
       router.push('/');
     } catch (error) {
       console.error('Authentication failed:', error);

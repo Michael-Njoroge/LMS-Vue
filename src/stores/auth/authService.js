@@ -33,6 +33,7 @@ export const redirectToGoogle = () => {
 };
 
 export const googleCallback = (data) => {
-  return axios.get('/auth/google/callback', data);
+  console.log("data",data)
+  return axios.post('/auth/google/callback', {code: data});
 };
 
