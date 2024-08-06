@@ -1,4 +1,12 @@
-import { register as registerService,login as loginService, logout as logoutService } from './authService';
+import { 
+  register as registerService,
+  login as loginService, 
+  forgot as forgotService, 
+  reset as resetService, 
+  logout as logoutService, 
+  emailVerification as emailVerificationService, 
+  resendVerification as resendVerificationService, 
+} from './authService';
 import { useToast } from 'vue-toastification';
 
 const toast = useToast();
@@ -13,12 +21,13 @@ export const auth = {
       isLoading: false,
       isError: false,
       isSuccess: false,
+      isAdmin: false,
       message: '',
     };
   },
   getters: {
     isLoggedIn: (state) => state.isLoggedIn,
-    isAdmin: (state) => state?.user && state?.user?.role?.role_name === 'admin',
+    isAdmin: (state) => state.isAdmin,
     user: (state) => state.user,
     isLoading: (state) => state.isLoading,
     isError: (state) => state.isError,
@@ -43,9 +52,21 @@ export const auth = {
       state.isLoggedIn = true;
       state.user = user;
     },
+    forgot(state) {
+      state.message = '';
+    },
+    reset(state, reset) {
+      state.reset = reset;
+    },
     register(state, user) {
       state.isRegistered = true;
       state.user = user;
+    },
+    emailVerification(state, emailVerification) {
+      state.emailVerification = emailVerification;
+    },
+    resendVerification(state, verification) {
+      state.verification = verification;
     },
     logout(state) {
       state.isLoggedIn = false;
@@ -57,14 +78,31 @@ export const auth = {
       if (user) {
         state.isLoggedIn = true;
         state.user = user;
+        
+        if (state.user.role === 'admin') {
+          state.isAdmin = true;
+        } else {
+          state.isAdmin = false;
+        }
+      } else {
+        state.isAdmin = false;
       }
     },
+    clearMessage(state) {
+      state.message = '';
+    }
   },
 
   actions: {
+
     async initAuth({ commit }) {
       commit('initialize');
     },
+
+    async clearMessage({ commit }) {
+      commit('clearMessage');
+    },
+
     async register({ commit }, data) {
       commit('setLoading', true);
       commit('setError', false);
@@ -92,6 +130,45 @@ export const auth = {
         commit('setLoading', false);
       }
     },
+
+    async emailVerification({ commit }, data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await emailVerificationService(data);
+        const emailVerif = response.data.data;
+        commit('emailVerification', emailVerif);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Email Verified');
+        toast.info(response?.data?.message || 'Email Verified');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to Verify');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
+    async resendVerification({ commit }, data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await resendVerificationService(data);
+        const verification = response.data.data;
+        commit('resendVerification', verification);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Email Verification Sent');
+        toast.info(response?.data?.message || 'Email Verification Sent');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to send');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
     async login({ commit }, data) {
       commit('setLoading', true);
       commit('setError', false);
@@ -120,6 +197,43 @@ export const auth = {
         commit('setLoading', false);
       }
     },
+
+    async forgot({ commit }, data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await forgotService(data);
+        const forgot = response.data.data;
+        commit('forgot', forgot);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Email Sent');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to send email');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
+    async reset({ commit }, data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await resetService(data);
+        const reset = response.data.data;
+        commit('reset', reset);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Password Reset');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to Reset');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
     async logout({ commit }) {
       commit('setLoading', true);
       commit('setError', false);

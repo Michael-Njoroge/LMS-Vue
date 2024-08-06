@@ -5,7 +5,10 @@
         <div class="card my-4 px-2">
           <div class="card-body">
             <h5 class="card-title text-center fw-bold">Reset Password</h5>
+
             <CForm novalidate :validated="validatedCustom01" @submit="handleReset" class="row g-3 needs-validation">
+              <strong v-if="message" class="small text-center text-success">{{ message }}</strong>
+            <strong class="small text-center text-danger">Please use the new set password in your next login</strong>
               <CustomInput
                 v-model="data.password"
                 customClass="mt-1 mb-3"
@@ -24,7 +27,16 @@
                 type="password"
                 required
               />
-              <CustomButton type="submit" color="success" text="Submit" customClass="text-white mb-3 w-100" shape="rounded-1"></CustomButton>
+              <CustomButton 
+                type="submit" 
+                :isLoading="isLoading"
+                color="success" 
+                text="Submit" 
+                customClass="text-white mb-3 w-100" 
+                shape="rounded-1"
+                loadingText="Resetting..."
+                :disabled="isEmpty || isLoading"
+              ></CustomButton>
             </CForm>
           </div>
         </div>
@@ -37,24 +49,54 @@
 import CustomInput from '@/components/CustomInput.vue';
 import CustomButton from '@/components/CustomButton.vue';
 import { CForm } from '@coreui/vue';
-import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
+
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
+
+const param = route.query;
 
 const data = ref({
+  email: param?.email,
+  token: param?.token,
   password: '',
-  password_confirmation: ''
+  password_confirmation: '',
 })
-const validatedCustom01 = ref(false);
 
-const handleReset = (event) => {
+const validatedCustom01 = ref(false);
+const isLoading = computed(() => store.getters['auth/isLoading']);
+const message = computed(() => store.getters['auth/message']);
+const isEmpty = computed(() => {
+  return !(data.value.password && 
+      data.value.password_confirmation);
+});
+
+const handleReset = async (event) => {
   event.preventDefault();
   const form = event.currentTarget;
+
   if (!form.checkValidity()) {
     event.stopPropagation();
-  } else {
-    alert(JSON.stringify(data.value));
+    validatedCustom01.value = true;
+    return;
   }
-  validatedCustom01.value = true;
+
+  try {
+    await store.dispatch('auth/reset', data.value);
+    setTimeout(() => {
+      store.dispatch('auth/clearMessage');
+      router.push('/login');
+    }, 8000);
+  } catch (error) {
+    console.error("Error during reset:", error);
+  } finally {
+    validatedCustom01.value = true;
+  }
 };
+
 </script>
 
 <style scoped>

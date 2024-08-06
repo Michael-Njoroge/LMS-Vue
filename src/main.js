@@ -16,24 +16,27 @@ import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 
-const app = createApp(App);
-app.use(VueSidebarMenu);
-app.use(store);
-app.use(router);
+store.dispatch('auth/initAuth').then(() => {
+  const app = createApp(App);
 
-app.use(Toast, {
-  position: POSITION.BOTTOM_RIGHT,
-  autoClose: 5000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: false,
-  draggable: false,
-  progress: undefined,
-  toastClassName: 'toast-custom'
+  app.use(VueSidebarMenu);
+  app.use(store);
+  app.use(router);
+
+  app.use(Toast, {
+    position: POSITION.BOTTOM_RIGHT,
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: false,
+    progress: undefined,
+    toastClassName: 'toast-custom'
+  });
+
+  if (process.env.NODE_ENV === 'development') {
+    app.config.devtools = true;
+  }
+
+  app.mount('#app');
 });
-
-if (process.env.NODE_ENV === 'development') {
-  app.config.devtools = true;
-}
-
-app.mount('#app');

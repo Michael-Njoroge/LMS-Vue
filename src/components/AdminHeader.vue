@@ -1,7 +1,7 @@
 <template>
   <CNavbar expand="lg" color-scheme="light" class="bg-light">
     <CContainer fluid class="navbar-container">
-      <div class="d-flexi align-items-center justify-content-between w-100 gap-3">
+      <div class="d-flex align-items-center justify-content-between w-100 gap-3">
         <div class="user-info">
           <h6 class="mt-2">Welcome {{ admin?.firstname }}</h6>
         </div>
@@ -58,13 +58,6 @@ const handleLogout = async () => {
 .navbar-container {
   display: flex;
   align-items: center;
-}
-
-.d-flexi {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
 }
 
 .user-info {

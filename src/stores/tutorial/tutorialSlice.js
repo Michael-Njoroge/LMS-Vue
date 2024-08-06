@@ -71,7 +71,6 @@ export const tutorials = {
         commit('getTutorials', tutorials);
         commit('setSuccess', true);
         commit('setMessage', response?.data?.message || 'Tutorials retrieved successfully');
-        toast.success(response?.data?.message || 'Tutorials retrieved successfully');
       } catch (error) {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Failed to get tutorials');
@@ -131,7 +130,6 @@ export const tutorials = {
         const tutorial = response.data.data;
         commit('getTutorial', tutorial);
         commit('setSuccess', true);
-        commit('setMessage', response?.data?.message || 'Tutorial retrieved successfully');
         toast.success(response?.data?.message || 'Tutorial retrieved successfully');
       } catch (error) {
         commit('setError', true);

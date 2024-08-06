@@ -105,7 +105,6 @@ const toast = useToast();
 
 const columns = ref([
   { key: 'title', label: 'Title' },
-  { key: 'slug', label: 'Slug' },
   { key: 'topic_name', label: 'Topic Name' },
   { key: 'content', label: 'Content' },
   { key: 'created_at', label: 'Created At' },
@@ -148,7 +147,7 @@ const openModal = async (mode, tutorial = null) => {
   if (editMode.value && tutorial) {
     data.value.title = tutorial.title;
     data.value.topic_name = tutorial.topic_name;
-    data.value.category = tutorial.category;
+    data.value.category = tutorial?.category?.id;
     keywordsContent.value = tutorial.keywords;
     content.value = tutorial.content;
     currentTutorial.value = tutorial;
@@ -196,6 +195,7 @@ const handleSave = async (event) => {
 
 onMounted(async () => {
   try {
+    await store.dispatch('tutorialCategories/getTutCats');
     await store.dispatch('tutorials/getTutorials');
   } catch (error) {
     console.error("Failed to fetch tutorials:", error);

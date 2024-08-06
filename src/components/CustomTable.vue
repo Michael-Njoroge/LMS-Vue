@@ -45,6 +45,9 @@
                     {{ item[column.key] }}
                   </slot>
                 </template>
+                 <template v-else-if="column.key === 'content' || column.key === 'description'">
+                  {{ strippedHtml(item[column.key]) }}
+                </template>
                 <template v-else>
                   {{ item[column.key] }}
                 </template>
@@ -110,6 +113,11 @@ const sortedItems = computed(() => {
     }
   });
 });
+
+const strippedHtml = (text) => {
+  if (!text) return '';
+  return text.replace(/(<([^>]+)>)/ig, '');
+};
 </script>
 
 <style scoped>

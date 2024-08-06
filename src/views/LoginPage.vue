@@ -4,8 +4,8 @@
       <div class="col-5 mx-auto">
         <div class="card px-2">
           <div class="card-body">
-            <h5 class="card-title text-center fw-bold">Log in to your account</h5>
-            <div class="d-flex justify-content-center align-items-center gap-4 mt-3">
+            <h5 v-if="!isEmailNotVerified" class="card-title text-center fw-bold">Log in to your account</h5>
+            <div v-if="!isEmailNotVerified" class="d-flex justify-content-center align-items-center gap-4 mt-3">
               <div class="card col-2" style="cursor: pointer;">
                 <div class="card-body py-1 d-flex justify-content-center align-items-center">
                   <i class="fab fa-google fs-5" style="color: #db4437;"></i>
@@ -22,8 +22,8 @@
                 </div>
               </div>
             </div>
-            <h6 class="mt-3">Or log in with an email</h6>
-            <CForm novalidate :validated="validatedCustom01" @submit="handleLogin" class="row g-3 needs-validation">
+            <h6 v-if="!isEmailNotVerified" class="mt-3">Or log in with an email</h6>
+            <CForm v-if="!isEmailNotVerified" novalidate :validated="validatedCustom01" @submit="handleLogin" class="row g-3 needs-validation">
               <CustomInput
                 v-model="data.email"
                 customClass="mt-2"
@@ -59,6 +59,19 @@
               </CustomButton>
               <router-link to="signup" class="text-right"><strong>Don't have an account?</strong></router-link>
             </CForm>
+            <div v-else>
+              <h5 class="mb-3 text-center">Please verify your email address to log in.</h5>
+              <h6 class="my-3 text-center">Or resend verification email</h6>
+              <CustomButton
+                @click="handleResendVerification"
+                :isLoading="isLoading"
+                color="primary"
+                text="Resend Verification Email"
+                loadingText="Sending..."
+                customClass="text-white w-100 fs-6"
+                shape="rounded-1"
+              ></CustomButton>
+            </div>
           </div>
         </div>
       </div>
@@ -72,7 +85,7 @@ import CustomButton from '@/components/CustomButton.vue';
 import { CForm, CFormCheck } from '@coreui/vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { ref, computed,watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 const store = useStore();
 const router = useRouter();
@@ -83,6 +96,7 @@ const data = ref({
   remember: false
 });
 const validatedCustom01 = ref(false);
+const isEmailNotVerified = ref(false);
 
 const user = computed(() => store.getters['auth/user']);
 const role = computed(() => user?.value?.role?.role_name);
@@ -90,9 +104,6 @@ const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
 const isLoading = computed(() => store.getters['auth/isLoading']);
 const isFormInvalid = computed(() => data.value.email === '' || data.value.password === '');
 
-// watchEffect(() => {
-//   console.log("user", user?.value?.role?.role_name);
-// });
 watch([isLoggedIn, role], ([loggedIn, userRole]) => {
   if (loggedIn && router.currentRoute.value.name !== 'LoginPage') {
     if (userRole === 'admin') {
@@ -111,6 +122,10 @@ const handleLogin = async (event) => {
   } else {
     try {
       await store.dispatch('auth/login', data.value);
+      if (isLoggedIn.value === false) {
+        isEmailNotVerified.value = true;
+      }
+
       if (isLoggedIn.value) {
         const userRole = role.value;
         if (userRole === 'admin') {
@@ -120,12 +135,22 @@ const handleLogin = async (event) => {
         }
       }
     } catch (error) {
-      console.error('Login failed:', error);
+        console.error('Login failed:', error);
     }
   }
   validatedCustom01.value = true;
 };
 
+const handleResendVerification = async () => {
+  isLoading.value = true;
+  try {
+    await store.dispatch('auth/resendVerification', { email: data.value.email });
+    isLoading.value = false;
+  } catch (error) {
+    console.error('Resend verification failed:', error);
+    isLoading.value = false;
+  }
+};
 </script>
 
 <style scoped>

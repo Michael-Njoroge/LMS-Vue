@@ -108,10 +108,10 @@ onMounted(() => {
 
 .dropzone .dz-preview {
   width: 100%;
-  max-width: 400px; /* Set a max-width to maintain card size */
-  position: relative; /* Ensure positioning is relative for child elements */
-  overflow: hidden; /* Hide overflow to maintain card size */
-  margin-bottom: 1rem; /* Add some margin for spacing */
+  max-width: 400px; 
+  position: relative; 
+  overflow: hidden;
+  margin-bottom: 1rem; 
 }
 
 .avatar-sm {
@@ -144,16 +144,16 @@ onMounted(() => {
 
 .dz-preview .text-container {
   flex-grow: 1;
-  overflow: hidden; /* Hide overflow text */
-  text-overflow: ellipsis; /* Show ellipsis for overflow text */
-  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
 }
 
 .dz-preview .text-container a,
 .dz-preview .text-container p {
   overflow: hidden;
   text-decoration: none;
-  text-overflow: ellipsis; /* Add ellipsis for overflowing text */
-  white-space: wrap; /* Prevent text wrapping */
+  text-overflow: ellipsis; 
+  white-space: wrap; 
 }
 </style>
