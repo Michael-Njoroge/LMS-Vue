@@ -12,7 +12,7 @@ import Admin from "@/views/AdminDashboard.vue";
 import Users from "@/views/UsersPage.vue";
 import Tutorials from "@/views/TutorialsPage.vue";
 import TutorialCategory from "@/views/TutorialCategoryPage.vue";
-import AuthCallback from '@/views/GoogleCallback.vue';
+import AuthCallback from '@/views/AuthCallback.vue';
 import { useStore } from 'vuex';
 
 const routes = [
@@ -25,7 +25,8 @@ const routes = [
   { path: "/terms-conditions", name: "Terms", component: Terms },
   { path: "/privacy-policy", name: "Privacy", component: Privacy },
   { path: "/courses", name: "Courses", component: Courses },
-  {path: '/auth-callback', name: 'AuthCallback',component: AuthCallback},
+  { path: '/auth/callback/google', name: 'AuthCallbackGoogle', component: AuthCallback },
+  { path: '/auth/callback/github', name: 'AuthCallbackGithub', component: AuthCallback },
   { path: "/admin", name: "Admin", component: Admin, meta: { requiresAdmin: true } },
   { path: "/admin/users", name: "Users", component: Users, meta: { requiresAdmin: true } },
   { path: "/admin/tutorials-category", name: "TutorialCategory", component: TutorialCategory, meta: { requiresAdmin: true } },

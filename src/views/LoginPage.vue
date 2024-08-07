@@ -6,12 +6,12 @@
           <div class="card-body">
             <h5 v-if="!isEmailNotVerified" class="card-title text-center fw-bold">Log in to your account</h5>
             <div v-if="!isEmailNotVerified" class="d-flex justify-content-center align-items-center gap-4 mt-3">
-              <div class="card col-2" style="cursor: pointer;" @click="redirectToGoogle">
+              <div class="card col-2" style="cursor: pointer;" @click="redirect('google')">
                 <div class="card-body py-1 d-flex justify-content-center align-items-center">
                   <i class="fab fa-google fs-5" style="color: #db4437;"></i>
                 </div>
               </div>
-              <div class="card col-2" style="cursor: pointer;">
+              <div class="card col-2" style="cursor: pointer;" @click="redirect('github')">
                 <div class="card-body py-1 d-flex justify-content-center align-items-center" >
                   <i class="fab fa-github fs-5" style="color: #333;"></i>
                 </div>
@@ -153,14 +153,15 @@ const handleResendVerification = async () => {
   }
 };
 
-const redirectToGoogle =  async () => {
+const redirect =  async (provider) => {
   try{
-    await store.dispatch('auth/redirect');
+    await store.dispatch('auth/redirect', provider);
     window.location.href = url.value
   }catch(error){
     console.log("error",error)
   }
 }
+
 </script>
 
 <style scoped>

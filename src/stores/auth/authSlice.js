@@ -6,8 +6,8 @@ import {
   logout as logoutService, 
   emailVerification as emailVerificationService, 
   resendVerification as resendVerificationService, 
-  redirectToGoogle as redirectToGoogleService, 
-  googleCallback as callbackGoogleService, 
+  redirect as redirectService, 
+  callback as callbackService, 
 } from './authService';
 import { useToast } from 'vue-toastification';
 
@@ -79,9 +79,6 @@ export const auth = {
     },
     redirectUrl(state,redirectUrl) {
       state.redirectUrl = redirectUrl;
-    },
-    callback(state,callback) {
-      state.callback = callback;
     },
     initialize(state) {
       const user = JSON.parse(localStorage.getItem('user'));
@@ -262,19 +259,19 @@ export const auth = {
       }
     },
 
-    async redirect({ commit }) {
+    async redirect({ commit },provider) {
       commit('setLoading', true);
       commit('setError', false);
       commit('setSuccess', false);
       try {
-        const response = await redirectToGoogleService();
+        const response = await redirectService(provider);
         const url = response?.data?.url;
         commit('redirectUrl', url);
         commit('setSuccess', true);
-        commit('setMessage', response?.data?.message || 'Redirect google!');
+        commit('setMessage', response?.data?.message || 'Success redirect!');
       } catch (error) {
         commit('setError', true);
-        commit('setMessage', error.response?.data?.message || 'Redirect to google failed');
+        commit('setMessage', error.response?.data?.message || 'Success redirect');
       } finally {
         commit('setLoading', false);
       }
@@ -285,12 +282,13 @@ export const auth = {
       commit('setError', false);
       commit('setSuccess', false);
       try {
-        const response = await callbackGoogleService(data);
+        const response = await callbackService(data);
         const user = response.data.data;
-        commit('callback', user);
+        console.log("user",user)
+        commit('user', user);
         commit('setSuccess', true);
-        commit('setMessage', response?.data?.message || 'Google callback called!');
-        toast.info(response?.data?.message || 'Google callback called!');
+        commit('setMessage', response?.data?.message || 'Success callback!');
+        toast.info(response?.data?.message || 'Success callback!');
         localStorage.setItem('user',JSON.stringify({
           id: response.data.data?.id,
           firstname: response.data.data?.firstname,
@@ -298,11 +296,11 @@ export const auth = {
           mobile: response.data.data?.mobile,
           email: response.data.data?.email,
           role: response.data.data?.role?.role_name,
-          token: response.data.data?.token,
+          token: response.data.data?.token?.tokenable_id,
         }))
       } catch (error) {
         commit('setError', true);
-        commit('setMessage', error.response?.data?.message || 'Google callback failed');
+        commit('setMessage', error.response?.data?.message || 'Callback failed');
       } finally {
         commit('setLoading', false);
       }

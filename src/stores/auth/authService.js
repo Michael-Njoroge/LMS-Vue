@@ -28,12 +28,11 @@ export const logout = () => {
   return axios.post('/logout');
 };
 
-export const redirectToGoogle = () => {
-  return axios.get('/auth/google');
+export const redirect = (provider) => {
+  return axios.get(`/redirect/${provider}`);
 };
 
-export const googleCallback = (data) => {
-  console.log("data",data)
-  return axios.post('/auth/google/callback', {code: data});
+export const callback = ({ code, provider }) => {
+  return axios.post(`/callback/${provider}`, {code: code});
 };
 

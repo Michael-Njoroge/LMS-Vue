@@ -48,6 +48,9 @@ const handleLogout = async () => {
     await store.dispatch('auth/logout');
     localStorage.removeItem('user');
     router.push('/');
+    setTimeout(() => {
+      store.dispatch('auth/clearMessage');
+    }, 2000);
   } catch (error) {
     console.log('error', error);
   }

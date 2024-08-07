@@ -20,9 +20,6 @@
             <li class="nav-item">
               <router-link class="nav-link text-dark" to="courses">Courses</router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link text-dark" to="/admin">Admin</router-link>
-            </li>
              <li class="nav-item">
               <router-link class="nav-link text-dark" to="#">Tutorials</router-link>
             </li>
