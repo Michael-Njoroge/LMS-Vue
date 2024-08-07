@@ -4,6 +4,7 @@ import { users } from './stores/user/userSlice';
 import { courses } from './stores/course/courseSlice';
 import { tutorials } from './stores/tutorial/tutorialSlice';
 import { tutorialCategories } from './stores/tutorialCategory/tutorialCatSlice';
+import { projectCategories } from './stores/projectCategory/projectCatSlice';
 
 export const store = createStore({
   modules: {
@@ -11,6 +12,7 @@ export const store = createStore({
     users,
     courses,
     tutorials,
-    tutorialCategories
+    tutorialCategories,
+    projectCategories
   },
 });

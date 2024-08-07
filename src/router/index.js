@@ -12,6 +12,7 @@ import Admin from "@/views/AdminDashboard.vue";
 import Users from "@/views/UsersPage.vue";
 import Tutorials from "@/views/TutorialsPage.vue";
 import TutorialCategory from "@/views/TutorialCategoryPage.vue";
+import ProjectCategory from "@/views/ProjectCategory.vue";
 import AuthCallback from '@/views/AuthCallback.vue';
 import { useStore } from 'vuex';
 
@@ -30,6 +31,7 @@ const routes = [
   { path: "/admin", name: "Admin", component: Admin, meta: { requiresAdmin: true } },
   { path: "/admin/users", name: "Users", component: Users, meta: { requiresAdmin: true } },
   { path: "/admin/tutorials-category", name: "TutorialCategory", component: TutorialCategory, meta: { requiresAdmin: true } },
+  { path: "/admin/project-category", name: "ProjectCategory", component: ProjectCategory, meta: { requiresAdmin: true } },
   { path: "/admin/tutorials", name: "Tutorials", component: Tutorials, meta: { requiresAdmin: true } },
 ];
 
