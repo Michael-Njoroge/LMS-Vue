@@ -11,6 +11,7 @@ import Courses from "@/views/CoursesPage.vue";
 import Admin from "@/views/AdminDashboard.vue";
 import Users from "@/views/UsersPage.vue";
 import Tutorials from "@/views/TutorialsPage.vue";
+import Projects from "@/views/ProjectsPage.vue";
 import TutorialCategory from "@/views/TutorialCategoryPage.vue";
 import ProjectCategory from "@/views/ProjectCategory.vue";
 import AuthCallback from '@/views/AuthCallback.vue';
@@ -28,11 +29,13 @@ const routes = [
   { path: "/courses", name: "Courses", component: Courses },
   { path: '/auth/callback/google', name: 'AuthCallbackGoogle', component: AuthCallback },
   { path: '/auth/callback/github', name: 'AuthCallbackGithub', component: AuthCallback },
+  { path: '/auth/callback/linkedin', name: 'AuthCallbackLinkedin', component: AuthCallback },
   { path: "/admin", name: "Admin", component: Admin, meta: { requiresAdmin: true } },
   { path: "/admin/users", name: "Users", component: Users, meta: { requiresAdmin: true } },
   { path: "/admin/tutorials-category", name: "TutorialCategory", component: TutorialCategory, meta: { requiresAdmin: true } },
   { path: "/admin/project-category", name: "ProjectCategory", component: ProjectCategory, meta: { requiresAdmin: true } },
   { path: "/admin/tutorials", name: "Tutorials", component: Tutorials, meta: { requiresAdmin: true } },
+  { path: "/admin/projects", name: "Projects", component: Projects, meta: { requiresAdmin: true } },
 ];
 
 const router = createRouter({

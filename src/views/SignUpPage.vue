@@ -18,7 +18,7 @@
               </div>
               <div class="card col-2" style="cursor: pointer;">
                 <div class="card-body py-1 d-flex justify-content-center align-items-center">
-                  <i class="fab fa-microsoft fs-5" style="color: #1da1f2;"></i>
+                  <i class="fab fa-linkedin fs-5" style="color: #1da1f2;"></i>
                 </div>
               </div>
             </div>

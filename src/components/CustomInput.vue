@@ -11,6 +11,7 @@
         :id="id"
         :placeholder="placeholder"
         :name="name"
+        :min="min"
         :valid="isValid"
         :invalid="isInvalid"
         @blur="validateInput"
@@ -60,6 +61,7 @@ const props = defineProps({
     default: false,
   },
   customClass: String,
+  min : Number,
   feedbackInvalid: {
     type: String,
     default: 'Please provide a valid input.',

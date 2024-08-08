@@ -72,7 +72,7 @@ const adminMenu = [
         title: 'Project Category',
       },
       {
-        href: '/admin/project',
+        href: '/admin/projects',
         icon: 'fa fa-tasks',
         title: 'All Projects',
       },

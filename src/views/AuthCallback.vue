@@ -25,6 +25,8 @@ onMounted(async () => {
     provider = 'google';
   } else if (path.includes('github')) {
     provider = 'github';
+  } else if (path.includes('linkedin')) {
+    provider = 'linkedin';
   } else {
     console.error('Unknown provider');
     router.push('/login');
@@ -34,8 +36,6 @@ onMounted(async () => {
   if (code) {
     try {
       await store.dispatch('auth/callback', { code, provider });
-      console.log('User logged in:', isLoggedIn.value);
-      console.log('User role:', role.value);
       if (isLoggedIn.value) {
         const userRole = role.value;
         if (userRole === 'admin') {
