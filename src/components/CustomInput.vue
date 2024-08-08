@@ -61,7 +61,7 @@ const props = defineProps({
     default: false,
   },
   customClass: String,
-  min : Number,
+  min: Number,
   feedbackInvalid: {
     type: String,
     default: 'Please provide a valid input.',
@@ -73,6 +73,10 @@ const inputValue = ref(props.modelValue);
 
 watch(inputValue, (newValue) => {
   emits('update:modelValue', newValue);
+});
+
+watch(() => props.modelValue, (newValue) => {
+  inputValue.value = newValue;
 });
 </script>
 

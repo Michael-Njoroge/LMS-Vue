@@ -12,6 +12,7 @@ import Admin from "@/views/AdminDashboard.vue";
 import Users from "@/views/UsersPage.vue";
 import Tutorials from "@/views/TutorialsPage.vue";
 import Projects from "@/views/ProjectsPage.vue";
+import AddProject from "@/views/AddProject.vue";
 import TutorialCategory from "@/views/TutorialCategoryPage.vue";
 import ProjectCategory from "@/views/ProjectCategory.vue";
 import AuthCallback from '@/views/AuthCallback.vue';
@@ -35,7 +36,9 @@ const routes = [
   { path: "/admin/tutorials-category", name: "TutorialCategory", component: TutorialCategory, meta: { requiresAdmin: true } },
   { path: "/admin/project-category", name: "ProjectCategory", component: ProjectCategory, meta: { requiresAdmin: true } },
   { path: "/admin/tutorials", name: "Tutorials", component: Tutorials, meta: { requiresAdmin: true } },
-  { path: "/admin/projects", name: "Projects", component: Projects, meta: { requiresAdmin: true } },
+  { path: "/admin/project-list", name: "Projects", component: Projects, meta: { requiresAdmin: true } },
+  { path: "/admin/project", name: "AddProject", component: AddProject, meta: { requiresAdmin: true } },
+  { path: "/admin/project/:id", name: "EditProject", component: AddProject, meta: { requiresAdmin: true } }
 ];
 
 const router = createRouter({

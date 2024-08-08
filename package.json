@@ -23,6 +23,7 @@
     "vue-router": "^4.4.2",
     "vue-sidebar-menu": "^5.4.1",
     "vue-toastification": "^2.0.0-rc.5",
+    "vue3-spinners": "^1.2.2",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

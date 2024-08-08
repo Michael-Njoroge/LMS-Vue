@@ -28,7 +28,7 @@ const route = useRoute();
 
 // Determine if the current route requires admin privileges
 const isAdminRoute = computed(() => {
-  const adminRoutes = ['Admin', 'Users', 'TutorialCategory', 'Tutorials', 'ProjectCategory', 'Projects'];
+  const adminRoutes = ['Admin', 'Users', 'TutorialCategory', 'Tutorials', 'ProjectCategory', 'AddProject', 'EditProject', 'Projects'];
   return adminRoutes.includes(route.name);
 });
 
@@ -72,7 +72,7 @@ const adminMenu = [
         title: 'Project Category',
       },
       {
-        href: '/admin/projects',
+        href: '/admin/project-list',
         icon: 'fa fa-tasks',
         title: 'All Projects',
       },
@@ -168,7 +168,7 @@ html, body {
 
 .vsm--toggle-btn {
     display: none!important;
-    background-color: transparent;
+    background-color: transparent!important;
 }
 
 .vsm--menu {

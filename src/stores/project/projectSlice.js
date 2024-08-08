@@ -22,6 +22,7 @@ export const projects = {
   },
   getters: {
     getProjects: (state) => state.getProjects,
+    getProject: (state) => state.getProject,
     isLoading: (state) => state.isLoading,
     isError: (state) => state.isError,
     isSuccess: (state) => state.isSuccess,
@@ -44,7 +45,7 @@ export const projects = {
     getProjects(state, getProjects) {
       state.getProjects = getProjects;
     },
-     getProject(state, getProject) {
+    getProject(state, getProject) {
       state.getProject = getProject;
     },
     addProject(state, addProject) {

@@ -15,11 +15,13 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import { VueSpinnersPlugin } from 'vue3-spinners';
 
 store.dispatch('auth/initAuth').then(() => {
   const app = createApp(App);
 
   app.use(VueSidebarMenu);
+  app.use(VueSpinnersPlugin)
   app.use(store);
   app.use(router);
 

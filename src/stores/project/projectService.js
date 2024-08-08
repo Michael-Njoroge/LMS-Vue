@@ -16,7 +16,7 @@ export const updateProject = (data) => {
   return axios.put(`/projects/${data.id}`, {
     title:data.title,
     price:data.price,
-    category_id:data.category,
+    category_id:data.category_id,
     keywords:data.keywords,
     links:data.links,
     images:data.images,
