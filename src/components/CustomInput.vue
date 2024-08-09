@@ -14,6 +14,7 @@
         :min="min"
         :valid="isValid"
         :invalid="isInvalid"
+        :disabled="disabled"
         @blur="validateInput"
         :required="required"
         :aria-describedby="`${id}-addon`"
@@ -57,6 +58,10 @@ const props = defineProps({
     default: 'person',
   },
   required: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
     type: Boolean,
     default: false,
   },

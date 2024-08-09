@@ -28,7 +28,18 @@ const route = useRoute();
 
 // Determine if the current route requires admin privileges
 const isAdminRoute = computed(() => {
-  const adminRoutes = ['Admin', 'Users', 'TutorialCategory', 'Tutorials', 'ProjectCategory', 'AddProject', 'EditProject', 'Projects'];
+  const adminRoutes = 
+  [
+    'Admin', 
+    'Users', 
+    'TutorialCategory', 
+    'Tutorials', 
+    'ProjectCategory', 
+    'AddProject', 
+    'EditProject', 
+    'Projects',
+    'ProfilePage'
+    ];
   return adminRoutes.includes(route.name);
 });
 

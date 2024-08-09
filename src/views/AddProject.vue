@@ -40,6 +40,7 @@
               feedbackInvalid="Project price is required"
               placeholder="Enter project price"
               type="number"
+              min="1"
               required
             />
 
@@ -48,7 +49,7 @@
               customClass="my-3"
               :options="categoryOptions"
               feedbackInvalid="Category is required"
-              disabledOption="Select category"
+              disabledOption="Select project category"
               required
             />
 

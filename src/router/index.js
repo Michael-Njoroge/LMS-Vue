@@ -16,6 +16,7 @@ import AddProject from "@/views/AddProject.vue";
 import TutorialCategory from "@/views/TutorialCategoryPage.vue";
 import ProjectCategory from "@/views/ProjectCategory.vue";
 import AuthCallback from '@/views/AuthCallback.vue';
+import ProfilePage from '@/views/ProfilePage.vue';
 import { useStore } from 'vuex';
 
 const routes = [
@@ -38,7 +39,8 @@ const routes = [
   { path: "/admin/tutorials", name: "Tutorials", component: Tutorials, meta: { requiresAdmin: true } },
   { path: "/admin/project-list", name: "Projects", component: Projects, meta: { requiresAdmin: true } },
   { path: "/admin/project", name: "AddProject", component: AddProject, meta: { requiresAdmin: true } },
-  { path: "/admin/project/:id", name: "EditProject", component: AddProject, meta: { requiresAdmin: true } }
+  { path: "/admin/project/:id", name: "EditProject", component: AddProject, meta: { requiresAdmin: true } },
+  { path: "/admin/profile", name: "ProfilePage", component: ProfilePage, meta: { requiresAdmin: true } }
 ];
 
 const router = createRouter({

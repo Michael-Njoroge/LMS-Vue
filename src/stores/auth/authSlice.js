@@ -127,6 +127,7 @@ export const auth = {
           lastname: response.data.data?.lastname,
           mobile: response.data.data?.mobile,
           email: response.data.data?.email,
+          image: response.data.data?.image,
           token: response.data.data?.token
         }))
       } catch (error) {
@@ -194,6 +195,7 @@ export const auth = {
           mobile: response.data.data?.mobile,
           email: response.data.data?.email,
           role: response.data.data?.role?.role_name,
+          image: response.data.data?.image,
           token: response.data.data?.token,
         }))
       } catch (error) {
