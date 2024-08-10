@@ -8,3 +8,7 @@ export const getUser= (id) => {
   return axios.get(`/users/${id}`);
 };
 
+export const updateProfile= (data) => {
+  return axios.get(`/users/${data.id}`,data.userData);
+};
+

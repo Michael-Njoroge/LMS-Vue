@@ -203,12 +203,12 @@ html, body {
 }
 
 .vsm--title {
-  color: #333333!important;
+  color: #8094ae!important;
 }
 
 .vsm--icon {
   background-color: transparent!important;
-  color: #333333!important;
+  color: #8094ae!important;
 }
 
 .vsm--link_active .vsm--title span {
@@ -232,7 +232,7 @@ html, body {
 }
 
 .vsm--header {
-  color: #333333!important;
+  color: #5094ae!important;
   text-align: center;
   margin-top: 8px;
   cursor: pointer;
