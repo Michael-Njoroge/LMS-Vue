@@ -5,11 +5,12 @@
       aria-labelledby="LiveDemoExampleLabel"
       :style="modalStyle"
       backdrop="static"
+      :alignment="alignment"
     >
-      <CModalHeader>
+      <CModalHeader :borderBottom="borderBottom">
         <CModalTitle id="LiveDemoExampleLabel">{{modalTitle}}</CModalTitle>
       </CModalHeader>
-      <CModalBody><slot></slot></CModalBody>
+      <CModalBody class="custom-modal-body"><slot></slot></CModalBody>
       <CModalFooter class="mt-3">
 <!--         <CButton style="text-transform:initial ;" :color ="colorCancel" @click="closeModal">
           Close
@@ -30,7 +31,7 @@ const props = defineProps({
   },
   modalTitle: {
     type: String,
-    default: 'Modal Title',
+    default: 'test',
   },
   colorCancel: {
     type: String,
@@ -56,6 +57,12 @@ const props = defineProps({
     type: String,
     default: '500px', // Default width of the modal
   },
+  alignment: String,
+  borderBottom: String,
+  backgroundColor: {
+    type: String,
+    default: '#ffffff',
+  },
 });
 
 const emit = defineEmits(['update:visible', 'save']);
@@ -70,9 +77,12 @@ const saveChanges = (event) => {
 
 const modalStyle = computed(() => ({
   '--cui-modal-width': props.width,
+  '--cui-modal-bg': props.backgroundColor,
 }));
 </script>
 
 <style scoped>
-
+.modal-header {
+  border-bottom: none!important;
+}
 </style>

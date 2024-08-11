@@ -1,6 +1,6 @@
 <template>
   <div :class="customClass">
-    <CFormLabel for="validationCustomUsername">{{ label }}</CFormLabel>
+    <CFormLabel for="validationCustomUsername" class="mt-3"><small>{{ label }}</small></CFormLabel>
     <CInputGroup class="has-validation">
       <CInputGroupText id="inputGroupPrepend">
         <span class="material-icons fs-6">{{ icon }}</span>
@@ -85,4 +85,5 @@ watch(() => props.modelValue, (newValue) => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

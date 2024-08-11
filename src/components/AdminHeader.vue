@@ -207,7 +207,7 @@
           </div>
           </div>
           <div class="dropdown">
-            <a href="javascript:void(0)" id="notificationDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+            <a href="javascript:void(0)" id="notificationDropdown" data-bs-toggle="dropdown">
               <img src="/images/user.png" class="rounded-circle" alt="User Avatar" style="width: 40px; height: 40px;">
             </a>
             <ul class="dropdown-menu dropdown-menu-end custom-dropdown-user p-0" style="border-radius: 3px;" aria-labelledby="notificationDropdown">
@@ -231,7 +231,9 @@
               </li>
                <li class="dropdown-item mx-3">
                   <div class="chat-details">
-                    <router-link to="/admin/profile" class="text-color d-flex align-items-center gap-2 mt-2" style="text-decoration: none; ">
+                    <router-link 
+                      :to="{ path: '/admin/profile', query: { section: 'securitySettings' } }"  
+                      class="text-color d-flex align-items-center gap-2 mt-2" style="text-decoration: none; ">
                       <span class="material-icons fs-5 " style="cursor: default; color: #526484;">settings</span>
                       <span class="" style="color: #526484;">Account Setting</span>
                   </router-link>
@@ -239,7 +241,8 @@
               </li>
                <li class="dropdown-item mx-3">
                   <div class="chat-details">
-                    <router-link to="/admin/profile" class="text-color d-flex align-items-center gap-2 mt-2" style="text-decoration: none; ">
+                    <router-link 
+                      :to="{ path: '/admin/profile', query: { section: 'accountActivity' } }"   class="text-color d-flex align-items-center gap-2 mt-2" style="text-decoration: none; ">
                       <span class="material-icons fs-5 " style="cursor: default; color: #526484;">directions_run</span>
                       <span class="" style="color: #526484;">Login Activity</span>
                   </router-link>
@@ -307,9 +310,9 @@ const handleLogout = async () => {
 }
 
 .search-form input:focus{
-  border: none;
-  outline-style: none;
-  box-shadow: none;
+  border: none!important;
+  outline-style: none!important;
+  box-shadow: none!important;
 }
 
 .custom-dropdown-menu {

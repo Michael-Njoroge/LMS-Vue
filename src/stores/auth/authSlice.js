@@ -127,6 +127,7 @@ export const auth = {
           lastname: response.data.data?.lastname,
           mobile: response.data.data?.mobile,
           email: response.data.data?.email,
+          username: response.data.data?.username,
           image: response.data.data?.image,
           token: response.data.data?.token
         }))
@@ -194,6 +195,7 @@ export const auth = {
           lastname: response.data.data?.lastname,
           mobile: response.data.data?.mobile,
           email: response.data.data?.email,
+          username: response.data.data?.username,
           role: response.data.data?.role?.role_name,
           image: response.data.data?.image,
           token: response.data.data?.token,

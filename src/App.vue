@@ -42,7 +42,6 @@ const isAdminRoute = computed(() => {
     ];
   return adminRoutes.includes(route.name);
 });
-
 const adminMenu = [
   {
     header: 'Skill Link',
@@ -50,78 +49,142 @@ const adminMenu = [
   {
     href: '/admin',
     title: 'Dashboard',
-    icon: 'fa fa-tachometer-alt',
+    icon: 'fa fa-home', 
   },
   {
-    title: 'Users',
-    icon: 'fa fa-user-friends',
+    title: 'Courses',
+    icon: 'fa fa-book', 
+    child: [
+      {
+        href: '/admin/courses-category',
+        icon: 'fa fa-tags', 
+        title: 'Categories',
+      },
+      {
+        href: '/admin/courses',
+        icon: 'fa fa-list-alt', 
+        title: 'Course List',
+      },
+    ],
+  },
+  {
+    title: 'Instructors',
+    icon: 'fa fa-user-tie', 
+    child: [
+      {
+        href: '/admin/courses-category',
+        icon: 'fa fa-chalkboard-teacher', 
+        title: 'Instructor Overview',
+      },
+      {
+        href: '/admin/courses',
+        icon: 'fa fa-users', 
+        title: 'Instructor List',
+      },
+      {
+        href: '/admin/courses',
+        icon: 'fa fa-user-edit', 
+        title: 'Instructor Details',
+      },
+      {
+        href: '/admin/courses',
+        icon: 'fa fa-money-check-alt', 
+        title: 'Instructor Payment',
+      },
+    ],
+  },
+  {
+    title: 'Students',
+    icon: 'fa fa-user-graduate',
+    href: '/admin/users',
+  },
+  {
+    title: 'Enrolment',
+    icon: 'fa fa-user-plus', 
+    child: [
+      {
+        href: '/admin/tutorials-category',
+        icon: 'fa fa-history',
+        title: 'Enroll History',
+      },
+      {
+        href: '/admin/tutorials',
+        icon: 'fa fa-user-check',
+        title: 'Enroll a Student',
+      },
+    ],
+  },
+  {
+    title: 'Messages',
+    icon: 'fa fa-envelope',
     href: '/admin/users',
   },
   {
     title: 'Tutorials',
-    icon: 'fa fa-chalkboard-teacher',
+    icon: 'fa fa-video',
     child: [
       {
         href: '/admin/tutorials-category',
-        icon: 'fa fa-folder-open',
+        icon: 'fa fa-folder', 
         title: 'Tutorial Category',
       },
       {
         href: '/admin/tutorials',
-        icon: 'fa fa-book-open',
+        icon: 'fa fa-play-circle',
         title: 'All Tutorials',
       },
     ],
   },
   {
     title: 'Projects',
-    icon: 'fa fa-project-diagram',
+    icon: 'fa fa-tasks', 
     child: [
       {
         href: '/admin/project-category',
-        icon: 'fa fa-folder-open',
+        icon: 'fa fa-folder',
         title: 'Project Category',
       },
       {
         href: '/admin/project-list',
-        icon: 'fa fa-tasks',
+        icon: 'fa fa-project-diagram', 
         title: 'All Projects',
       },
     ],
   },
   {
     title: 'Documentations',
-    icon: 'fa fa-file-alt',
+    icon: 'fa fa-file-alt', 
     child: [
       {
         href: '/admin/documentation-category',
-        icon: 'fa fa-folder-open',
+        icon: 'fa fa-folder-open', 
         title: 'Documentation Category',
       },
       {
         href: '/admin/documentation',
-        icon: 'fa fa-file-alt',
+        icon: 'fa fa-book', 
         title: 'All Documentations',
       },
     ],
   },
   {
     title: 'Videos',
-    icon: 'fa fa-video',
+    icon: 'fa fa-video', 
     child: [
       {
         href: '/admin/video-category',
-        icon: 'fa fa-folder-open',
+        icon: 'fa fa-folder-open', 
         title: 'Video Category',
       },
       {
         href: '/admin/video',
-        icon: 'fa fa-video',
+        icon: 'fa fa-film', 
         title: 'All Videos',
       },
     ],
   },
 ];
+
 
 </script>
 
@@ -203,12 +266,14 @@ html, body {
 }
 
 .vsm--title {
-  color: #8094ae!important;
+  color: #526484!important;
+  font-weight: bold;
 }
 
 .vsm--icon {
   background-color: transparent!important;
-  color: #8094ae!important;
+  color: #526484!important;
+  font-weight: bold;
 }
 
 .vsm--link_active .vsm--title span {
@@ -246,5 +311,10 @@ html, body {
 
 .v-sidebar-menu .vsm--link {
   padding: 5px 7px!important;
+}
+
+.vsm--dropdown{
+  margin-right: 16px!important;
+  margin-left: 16px!important;
 }
 </style>

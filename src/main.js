@@ -15,6 +15,7 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import './main.css';
 import { VueSpinnersPlugin } from 'vue3-spinners';
 
 store.dispatch('auth/initAuth').then(() => {

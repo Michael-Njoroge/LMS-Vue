@@ -45,7 +45,7 @@ import CustomTable from '@/components/CustomTable.vue';
 import CustomButton from '@/components/CustomButton.vue';
 import swal from 'sweetalert';
 import { useToast } from 'vue-toastification';
-import { VueSpinnerDots } from 'vue3-spinners'; // Ensure this import is correct
+import { VueSpinnerDots } from 'vue3-spinners';
 
 const store = useStore();
 const toast = useToast();
@@ -127,4 +127,16 @@ const openModal = async () => {
   box-shadow: none !important;
   outline: none !important;
 }
+
+input:focus,input:hover{
+    box-shadow: none !important;
+    outline: none !important;
+  }
+  input:focus{
+    border: 1px solid #e2e5eb!important;
+  }
+  input{
+    border: 1px solid #e2e5eb!important;
+  }
+
 </style>
