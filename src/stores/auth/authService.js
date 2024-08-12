@@ -8,6 +8,10 @@ export const login = (data) => {
   return axios.post('/login', data);
 };
 
+export const loginHistory = () => {
+  return axios.get('/login/history');
+};
+
 export const forgot = (data) => {
   return axios.post('/forgot-password', data);
 };

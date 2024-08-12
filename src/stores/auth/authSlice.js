@@ -8,6 +8,7 @@ import {
   resendVerification as resendVerificationService, 
   redirect as redirectService, 
   callback as callbackService, 
+  loginHistory as loginHistoryService, 
 } from './authService';
 import { useToast } from 'vue-toastification';
 
@@ -32,6 +33,7 @@ export const auth = {
     isAdmin: (state) => state.isAdmin,
     redirectUrl: (state) => state.redirectUrl,
     callback: (state) => state.callback,
+    loginHistory: (state) => state.loginHistory,
     user: (state) => state.user,
     isLoading: (state) => state.isLoading,
     isError: (state) => state.isError,
@@ -79,6 +81,9 @@ export const auth = {
     },
     redirectUrl(state,redirectUrl) {
       state.redirectUrl = redirectUrl;
+    },
+    loginHistory(state, loginHistory) {
+      state.loginHistory = loginHistory;
     },
     initialize(state) {
       const user = JSON.parse(localStorage.getItem('user'));
@@ -204,6 +209,25 @@ export const auth = {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Login failed');
         toast.error(error.response?.data?.message || 'Login failed');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
+    async loginHistory({ commit }) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await loginHistoryService();
+        const history = response.data.data;
+        commit('loginHistory', history);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Login history  retrieved successfully');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to get history');
+        toast.error(error.response?.data?.message || 'Failed to get history');
       } finally {
         commit('setLoading', false);
       }

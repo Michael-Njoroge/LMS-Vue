@@ -98,11 +98,11 @@
           <div class="d-flex flex-column mx-3 mt-2">
             <div class="d-flex flex-column">
               <span class="text-muted"><strong>Last Login</strong></span>
-              <span style="color: #667692;"><small>06-29-2020 02:39pm</small></span>
+              <span style="color: #667692;"><small>{{loginHistory[0]?.login_at}}</small></span>
             </div>
             <div class="d-flex flex-column my-2">
               <span class="text-muted"><strong>Login IP</strong></span>
-              <span style="color: #667692;"><small>192.129.243.28</small></span>
+              <span style="color: #667692;"><small>{{loginHistory[0]?.ip_address}}</small></span>
             </div>
           </div>
         </div>
@@ -251,56 +251,15 @@
             </div>
             <div class="card p-0 m-0">
               <div class="card-header d-flex">
-               <span class="col-3">Browser </span>
-               <span class="col-3">IP </span>
-               <span class="col-3">Time </span>
+               <span class="col-5">Browser </span>
+               <span class="col-2">IP </span>
+               <span class="col-2">Time </span>
               </div>
-              <div class="card-body p-0">
-                <div class="d-flex text-muted data-item p-2 px-3">
-                  <span class="col-3"><small>Chrome on Window</small></span>
-                  <span class="col-3"><small>192.149.122.128</small></span>
-                  <span class="col-3"><small>11:34 PM</small></span>
-                </div>
+              <div class="card-body p-0" v-for="(item, index) in loginHistory" :key="index">
                  <div class="d-flex text-muted data-item p-2 px-3">
-                  <span class="col-3"><small>Mozilla on Window</small></span>
-                  <span class="col-3"><small>192.149.122.128</small></span>
-                  <span class="col-3"><small>Nov 20, 2019 10:34 PM</small></span>
-                  <span class="material-icons text-end px-5 fs-5 col-3">close</span>
-                </div>
-                 <div class="d-flex text-muted data-item p-2 px-3">
-                  <span class="col-3"><small>Chrome on iMac</small></span>
-                  <span class="col-3"><small>86.188.154.225</small></span>
-                  <span class="col-3"><small>Oct 29, 2019 09:38 AM</small></span>
-                  <span class="material-icons text-end px-5 fs-5 col-3">close</span>
-                </div>
-                 <div class="d-flex text-muted data-item p-2 px-3">
-                  <span class="col-3"><small>Chrome on Window</small></span>
-                  <span class="col-3"><small>192.149.122.128</small></span>
-                  <span class="col-3"><small>Oct 23, 2019 04:16 PM</small></span>
-                  <span class="material-icons text-end px-5 fs-5 col-3">close</span>
-                </div>
-                 <div class="d-flex text-muted data-item p-2 px-3">
-                  <span class="col-3"><small>Mozilla on Window</small></span>
-                  <span class="col-3"><small>86.188.154.225</small></span>
-                  <span class="col-3"><small>Nov 20, 2019 10:34 PM</small></span>
-                  <span class="material-icons text-end px-5 fs-5 col-3">close</span>
-                </div>
-                <div class="d-flex text-muted data-item p-2 px-3">
-                  <span class="col-3"><small>Chrome on Window</small></span>
-                  <span class="col-3"><small>192.149.122.128</small></span>
-                  <span class="col-3"><small>Oct 23, 2019 04:16 PM</small></span>
-                  <span class="material-icons text-end px-5 fs-5 col-3">close</span>
-                </div>
-                 <div class="d-flex text-muted data-item p-2 px-3">
-                  <span class="col-3"><small>Mozilla on Window</small></span>
-                  <span class="col-3"><small>192.149.122.128</small></span>
-                  <span class="col-3"><small>Nov 20, 2019 10:34 PM</small></span>
-                  <span class="material-icons text-end px-5 fs-5 col-3">close</span>
-                </div>
-                <div class="d-flex text-muted data-item p-2 px-3">
-                  <span class="col-3"><small>Chrome on Window</small></span>
-                  <span class="col-3"><small>192.149.122.128</small></span>
-                  <span class="col-3"><small>Oct 23, 2019 04:16 PM</small></span>
+                  <span class="col-5"><small>{{item?.user_agent}}</small></span>
+                  <span class="col-2"><small>{{item?.ip_address}}</small></span>
+                  <span class="col-2"><small>{{item?.login_at}}</small></span>
                   <span class="material-icons text-end px-5 fs-5 col-3">close</span>
                 </div>
               </div>
@@ -561,6 +520,7 @@ const store = useStore();
 const route = useRoute();
 
 const user = ref('');
+const loginHistory = ref([]);
 
 const data = ref({
   firstname: user?.value?.firstname,
@@ -611,17 +571,22 @@ const handleFileChange = (event) => {
   }
 };
 
-onMounted(()=>{
+onMounted( async()=>{
   if (route.query.section) {
     selectSection(route.query.section);
   }
   user.value = store.getters['auth/user'];
+
   data.value={
     firstname: user?.value?.firstname,
     lastname: user?.value?.lastname,
     email: user?.value?.email,
     mobile: user?.value?.mobile,
   }
+
+  await store.dispatch('auth/loginHistory');
+  loginHistory.value = store.getters['auth/loginHistory'];
+
 })
 
 watch(route, (newRoute) => {
