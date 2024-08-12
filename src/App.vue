@@ -312,6 +312,9 @@ html, body {
 .v-sidebar-menu .vsm--link {
   padding: 5px 7px!important;
 }
+.vsm--link_open{
+  background-color: transparent!important;
+}
 
 .vsm--dropdown{
   margin-right: 16px!important;

@@ -223,7 +223,10 @@
               <li class="dropdown-divider m-0"></li>
               <li class="dropdown-item mx-3">
                   <div class="chat-details">
-                    <router-link to="/admin/profile" class="text-color d-flex align-items-center gap-2 mt-2" style="text-decoration: none; ">
+                    <router-link 
+                      :to="{ path: '/admin/profile', query: { section: 'personalInfo' } }"
+                      class="text-color d-flex align-items-center gap-2 mt-2" 
+                      style="text-decoration: none; ">
                       <span class="material-icons fs-5 " style="cursor: default; color: #526484;">person</span>
                       <span class="" style="color: #526484;">View Profile</span>
                   </router-link>

@@ -341,7 +341,7 @@
                       <small>Last changed: Dec 2, 2023</small>
                     </p>
                     <div>
-                      <button type="button" style="text-transform: initial;" class="btn btn-primary btn-sm mb-0">Change Password</button>
+                      <button @click="changePassModal()" type="button" style="text-transform: initial;" class="btn btn-primary btn-sm mb-0">Change Password</button>
                     </div>
                   </div>
                   <div>
@@ -504,6 +504,49 @@
       </div>
     </CForm>
   </CustomModal>
+
+  <CustomModal
+    :visible="visibleModal1"
+    @update:visible="visibleModal1 = $event"
+    @save="handleSave"
+    modalTitle="Update Password"
+    colorCancel="secondary"
+    colorSave="success text-white w-100"
+    borderBottom="none"
+    buttonText="Update"
+    type="submit"
+    backgroundColor="#f5f6fa"
+    :disabled="isFormInvalid"
+  >
+    <CForm novalidate :validated="validatedCustom01" @submit.prevent="handleSave" class="row needs-validation">
+      <CustomInput
+        v-model="data.currentPass"
+        feedbackInvalid="Current Password is required"
+        placeholder="Enter Current Password"
+        label="Current Password:"
+        icon="lock"
+        type="password"
+        required
+      />
+       <CustomInput
+        v-model="data.newPass"
+        feedbackInvalid="New Password is required"
+        placeholder="Enter New Password"
+        type="password"
+        icon="lock_open"
+        label="New Password:"
+        required
+      />
+      <CustomInput
+        v-model="data.password_confirmation"
+        placeholder="Enter Password Again"
+        type="password"
+        icon="verified_user"
+        label="Confirm Password:"
+        required
+      />
+    </CForm>
+  </CustomModal>
 </template>
 
 <script setup>
@@ -534,6 +577,7 @@ const data = ref({
 const currentSection = ref('personalInfo')
 const profileSection = ref('profileInfo')
 const visibleModal = ref(false)
+const visibleModal1 = ref(false)
 const fileInput = ref(null);
 
 const selectSection = (section) => {
@@ -546,6 +590,10 @@ const selectProfileSection = (section) => {
 
 const openModal = () => {
   visibleModal.value = true;
+};
+
+const changePassModal = () => {
+  visibleModal1.value = true;
 };
 
 const handleSave = () => {
