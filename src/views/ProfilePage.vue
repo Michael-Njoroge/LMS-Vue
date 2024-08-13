@@ -249,19 +249,24 @@
                  <span class="material-icons fs-5 mx-1 mb-0">info</span>
                </p>
             </div>
-            <div class="card p-0 m-0">
+            <div class="card p-0 m-0 mb-4">
               <div class="card-header d-flex">
                <span class="col-5">Browser </span>
                <span class="col-2">IP </span>
                <span class="col-2">Time </span>
               </div>
-              <div class="card-body p-0" v-for="(item, index) in loginHistory" :key="index">
+              <div class="card-body p-0" v-for="(item, index) in paginatedLoginHistory" :key="index">
                  <div class="d-flex text-muted data-item p-2 px-3">
                   <span class="col-5"><small>{{item?.user_agent}}</small></span>
                   <span class="col-2"><small>{{item?.ip_address}}</small></span>
                   <span class="col-2"><small>{{item?.login_at}}</small></span>
                   <span class="material-icons text-end px-5 fs-5 col-3">close</span>
                 </div>
+              </div>
+               <div class="card-footer d-flex justify-content-end gap-4 align-items-center ">
+                <a href="javascript:void(0)" style="text-transform: initial;" :style="{ cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }"  @click="prevPage" :disabled="currentPage === 1" class="btn btn-sm btn-primary">Previous</a>
+                <p class="mb-0">page {{currentPage}} of {{totalPages}}</p>
+                <a href="javascript:void(0)" style="text-transform: initial;" :style="{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }"  @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-sm btn-primary">Next</a>
               </div>
             </div>
           </div>
@@ -344,7 +349,6 @@
     :buttonText="profileSection === 'profileInfo' ? 'Update Profile' : 'Update Address'"
     type="submit"
     backgroundColor="#f5f6fa"
-    :disabled="isFormInvalid"
   >
   <div class="d-flex gap-4 pb-2" style="color: #566887;border-bottom: 1px solid #e5e9f2;">
     <h6 
@@ -373,6 +377,7 @@
         placeholder="Enter FirstName"
         label="First Name:"
         type="text"
+        icon="person"
         required
       />
        <CustomInput
@@ -381,6 +386,7 @@
         placeholder="Enter LastName"
         type="text"
         label="Last Name:"
+        icon="person"
         required
       />
       </div>
@@ -391,6 +397,7 @@
         placeholder="Enter Email"
         label="Email:"
         type="email"
+        icon="email"
         required
       />
        <CustomInput
@@ -399,6 +406,7 @@
         placeholder="Enter Phone Number"
         type="text"
         label=" Phone Number:"
+        icon="phone"
         required
       />
       </div>
@@ -408,6 +416,7 @@
         placeholder="12/08/2001"
         type="text"
         label="Date of Birth:"
+        icon="calendar_today"
         required
       />
        <CustomInput
@@ -415,6 +424,7 @@
         placeholder="Enter Nationality"
         type="text"
         label="Nationality:"
+        icon="flag"
         required
       />
       </div>
@@ -433,6 +443,7 @@
         placeholder="Enter Address Line 1"
         label="Address Line 1:"
         type="text"
+        icon="place"
         required
       />
        <CustomInput
@@ -441,6 +452,7 @@
         placeholder="Enter Address Line 2"
         type="tel"
         label="Address Line 2:"
+        icon="place"
         required
       />
       </div>
@@ -450,6 +462,7 @@
         placeholder="Enter State"
         type="text"
         label="State:"
+        icon="location_city"
         required
       />
        <CustomInput
@@ -457,6 +470,7 @@
         placeholder="Enter Country"
         type="text"
         label="Country:"
+         icon="public"
         required
       />
       </div>
@@ -467,7 +481,7 @@
   <CustomModal
     :visible="visibleModal1"
     @update:visible="visibleModal1 = $event"
-    @save="handleSave"
+    @save="handlePasswordSave"
     modalTitle="Update Password"
     colorCancel="secondary"
     colorSave="success text-white w-100"
@@ -475,11 +489,14 @@
     buttonText="Update"
     type="submit"
     backgroundColor="#f5f6fa"
-    :disabled="isFormInvalid"
+    :disabled="isFormInvalid || passwordMatchError"
   >
-    <CForm novalidate :validated="validatedCustom01" @submit.prevent="handleSave" class="row needs-validation">
+      <div v-if="message" class="alert text-center alert-danger">
+        {{ message }}
+      </div>
+    <CForm novalidate :validated="validatedCustom02" @submit.prevent="handlePasswordSave" class="row needs-validation">
       <CustomInput
-        v-model="data.currentPass"
+        v-model="passwordData.currentPassword"
         feedbackInvalid="Current Password is required"
         placeholder="Enter Current Password"
         label="Current Password:"
@@ -487,8 +504,8 @@
         type="password"
         required
       />
-       <CustomInput
-        v-model="data.newPass"
+    <CustomInput
+        v-model="passwordData.password"
         feedbackInvalid="New Password is required"
         placeholder="Enter New Password"
         type="password"
@@ -496,20 +513,26 @@
         label="New Password:"
         required
       />
-      <CustomInput
-        v-model="data.password_confirmation"
-        placeholder="Enter Password Again"
-        type="password"
-        icon="verified_user"
-        label="Confirm Password:"
-        required
-      />
+      <div class="mb-3">
+        <CustomInput
+          v-model="passwordData.password_confirmation"
+          placeholder="Enter Password Again"
+          feedbackInvalid="Confirm Password is required"
+          type="password"
+          icon="verified_user"
+          label="Confirm Password:"
+          required
+        />
+         <div v-if="passwordMatchError" class="invalid-feedback d-block">
+          Passwords do not match
+        </div>
+      </div>
     </CForm>
   </CustomModal>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import CustomModal from '@/components/CustomModal.vue';
@@ -521,9 +544,12 @@ const route = useRoute();
 
 const user = ref('');
 const loginHistory = ref([]);
+const itemsPerPage = 5;
+const currentPage = ref(1);
+const validatedCustom02 = ref(false);
 
 const data = ref({
-  firstname: user?.value?.firstname,
+  firstname: '',
   lastname: '',
   email: '',
   mobile: '',
@@ -533,12 +559,27 @@ const data = ref({
   country: '',
   address1: '',
   address2: '',
-})
+});
+
+const passwordData = ref({
+  currentPassword: '',
+  password: '',
+  password_confirmation: '',
+});
+
 const currentSection = ref('personalInfo')
 const profileSection = ref('profileInfo')
 const visibleModal = ref(false)
 const visibleModal1 = ref(false)
+const message = computed(() => store.getters['auth/message']);
+const passwordMatchError = ref(false);
 const fileInput = ref(null);
+
+const isFormInvalid = computed(() => 
+  passwordData.value.currentPassword === '' ||
+  passwordData.value.password === '' ||
+  passwordData.value.password_confirmation === ''
+);
 
 const selectSection = (section) => {
   currentSection.value = section
@@ -557,7 +598,54 @@ const changePassModal = () => {
 };
 
 const handleSave = () => {
-  console.log('handleSave called');
+  if (profileSection.value === 'profileInfo') {
+    saveProfileInfo();
+  } else if (profileSection.value === 'addressInfo') {
+    saveAddressInfo();
+  }
+};
+
+const saveProfileInfo = () => {
+  const profileData = {
+    firstname: data.value.firstname,
+    lastname: data.value.lastname,
+    email: data.value.email,
+    mobile: data.value.mobile,
+    birth: data.value.birth,
+    nationality: data.value.nationality,
+  };
+  console.log('Saving profile information:', profileData);
+};
+const saveAddressInfo = () => {
+  const addressData = {
+    address1: data.value.address1,
+    address2: data.value.address2,
+    state: data.value.state,
+    country: data.value.country,
+  };
+  console.log('Saving address information:', addressData);
+};
+
+watch([() => passwordData.value.password, () => passwordData.value.password_confirmation], () => {
+  passwordMatchError.value = passwordData.value.password !== passwordData.value.password_confirmation;
+});
+
+const handlePasswordSave =  async(event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.checkValidity() || passwordMatchError.value) {
+    event.stopPropagation();
+  } else {
+    try {
+      await store.dispatch('auth/updatePassword', passwordData.value);
+      setTimeout(() => {
+        store.dispatch('auth/clearMessage');
+      }, 8000);
+    } catch (error) {
+        console.error('Failed:', error);
+    }
+  }
+  validatedCustom02.value = true;
 };
 
 const triggerFileInput = () => {
@@ -570,6 +658,29 @@ const handleFileChange = (event) => {
     console.log('Selected file:', file);
   }
 };
+
+const totalPages = computed(() => {
+  return Math.ceil(loginHistory.value.length / itemsPerPage);
+});
+
+const paginatedLoginHistory = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return loginHistory.value.slice(start, end);
+});
+
+// Pagination methods
+function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+}
 
 onMounted( async()=>{
   if (route.query.section) {
@@ -586,7 +697,9 @@ onMounted( async()=>{
 
   await store.dispatch('auth/loginHistory');
   loginHistory.value = store.getters['auth/loginHistory'];
-
+  setTimeout(() => {
+    store.dispatch('auth/clearMessage');
+  }, 200);
 })
 
 watch(route, (newRoute) => {

@@ -4,7 +4,6 @@
       @close="closeModal"
       aria-labelledby="LiveDemoExampleLabel"
       :style="modalStyle"
-      backdrop="static"
       :alignment="alignment"
     >
       <CModalHeader :borderBottom="borderBottom">
@@ -50,8 +49,8 @@ const props = defineProps({
     default: 'button',
   },
   disabled: {
-    type: String,
-    default: 'false',
+    type: Boolean,
+    default: false,
   },
   width: {
     type: String,

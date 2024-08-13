@@ -9,6 +9,7 @@ import {
   redirect as redirectService, 
   callback as callbackService, 
   loginHistory as loginHistoryService, 
+  updatePassword as updatePasswordService, 
 } from './authService';
 import { useToast } from 'vue-toastification';
 
@@ -63,6 +64,9 @@ export const auth = {
     },
     reset(state, reset) {
       state.reset = reset;
+    },
+    updatePassword(state, updatePassword) {
+      state.updatePassword = updatePassword;
     },
     register(state, user) {
       state.isRegistered = true;
@@ -264,6 +268,24 @@ export const auth = {
       } catch (error) {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Failed to Reset');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
+    async updatePassword({ commit }, data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await updatePasswordService(data);
+        const updatePassword = response.data.data;
+        commit('updatePassword', updatePassword);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Password updated successfully');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to updated successfully');
       } finally {
         commit('setLoading', false);
       }

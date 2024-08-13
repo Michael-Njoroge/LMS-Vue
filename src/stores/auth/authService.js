@@ -20,6 +20,10 @@ export const reset = (data) => {
   return axios.post('/reset-password', data);
 };
 
+export const updatePassword = (data) => {
+  return axios.put('/users/update/password', data);
+};
+
 export const resendVerification = (data) => {
   return axios.post('/email/resend', data);
 };
