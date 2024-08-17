@@ -315,16 +315,58 @@
                   <div class="mx-4">
                       <div class="d-flex align-items-center gap-2">
                         <h6 class="fw-bolder mb-0" style="color: #364a63;">2 Factor Auth</h6>
-                        <span class="badge bg-success mb-0">Enabled</span>
+                        <span :class="['badge', is2FAEnabled ? 'bg-success' : 'bg-danger', 'mb-0']">
+                          {{ is2FAEnabled ? 'Enabled' : 'Disabled' }}
+                        </span>
                       </div>
                       <div class="d-flex align-items-center justify-content-between">
                           <p class="text-muted mb-0 me-3" style="color: #526484; flex-grow: 1;">
                               <small>Secure your account with 2FA security. When it is activated you will need to enter not only your password, but also a special code using an app. You can receive this code by mobile app.</small>
                           </p>
-                          <button type="button" style="text-transform: initial; padding: 5px 12px;" class="btn btn-primary btn-sm mb-0">Disable</button>
+                          <button @click="toggle2FA" :disabled="isProcessing" type="button" style="text-transform: initial; padding: 5px 12px;" class="btn btn-primary btn-sm mb-0"> {{ is2FAEnabled ? 'Disable' : 'Enable' }} </button>
+                          <!-- <CustomButton
+                            @click="toggle2FA"
+                            :isLoading="isProcessing"
+                            :disabled="isProcessing"
+                            color="primary"
+                            :text="is2FAEnabled ? 'Disable' : 'Enable'"
+                            loadingText="Please wait..."
+                            customClass="text-white w-100 fs-6"
+                            shape="rounded-1"
+                          ></CustomButton> -->
                       </div>
                   </div>   
               </div>
+
+               <CustomModal
+                 :visible="visibleModal2"
+                  @update:visible="visibleModal2 = $event"
+                  @save="confirmAction"
+                  :modalTitle="is2FAEnabled ? 'Disable 2FA' : 'Enable 2FA'"
+                  colorCancel="secondary"
+                  colorSave="success text-white w-100"
+                  alignment="center"
+                  width="600px"
+                  borderBottom="none"
+                  :buttonText="is2FAEnabled ? 'Disable 2FA' : 'Enable 2FA'"
+                  type="submit"
+                  backgroundColor="#f5f6fa"
+                  :disabled="isInvalid"
+               >
+                  <CForm novalidate :validated="validatedCustom03" @submit.prevent="confirmAction" class="row g-3 needs-validation">
+                    <p>{{ is2FAEnabled ? 'Are you sure you want to disable two-factor authentication?' : 'Scan the QR code with your 2FA app and enter the code.' }}</p>
+                    <div v-if="!is2FAEnabled">
+                      <div v-html="qrCode" class="d-flex align-items-center justify-content-center mx-auto" style="max-width: 250px; max-height: 250px; text-align: center;"></div>
+                      <CustomInput 
+                        v-model="code" 
+                        feedbackInvalid="Authentication Code is required"
+                        label="Authentication Code" 
+                        placeholder="Enter the code from your app" 
+                        required
+                      />
+                    </div>
+                  </CForm>
+              </CustomModal>
 
               </div>
             </div>
@@ -350,132 +392,132 @@
     type="submit"
     backgroundColor="#f5f6fa"
   >
-  <div class="d-flex gap-4 pb-2" style="color: #566887;border-bottom: 1px solid #e5e9f2;">
-    <h6 
-      @click="selectProfileSection('profileInfo')"  
-      style="cursor: pointer; "
-      :style="profileSection === 'profileInfo' ? { borderBottom: '4px solid #854fff', paddingBottom: '10px' } : { paddingBottom: '5px' }"
-      :class="[{ active: profileSection === 'profileInfo' }]" 
-    >
-    <strong>Personal</strong>
-  </h6>
-    <h6 
-      @click="selectProfileSection('addressInfo')" 
-      style="cursor: pointer;"
-      :style="profileSection === 'addressInfo' ? { borderBottom: '4px solid #854fff', paddingBottom: '10px' } : { paddingBottom: '5px' }"
-      :class="[{ active: profileSection === 'addressInfo' }]" 
-    >
-    <strong>Address</strong>
-  </h6>
-  </div>
-    <CForm novalidate :validated="validatedCustom01" @submit.prevent="handleSave" class="row g-3 needs-validation">
-      <div class="" v-if="profileSection === 'profileInfo'">
+    <div class="d-flex gap-4 pb-2" style="color: #566887;border-bottom: 1px solid #e5e9f2;">
+      <h6 
+        @click="selectProfileSection('profileInfo')"  
+        style="cursor: pointer; "
+        :style="profileSection === 'profileInfo' ? { borderBottom: '4px solid #854fff', paddingBottom: '10px' } : { paddingBottom: '5px' }"
+        :class="[{ active: profileSection === 'profileInfo' }]" 
+      >
+      <strong>Personal</strong>
+    </h6>
+      <h6 
+        @click="selectProfileSection('addressInfo')" 
+        style="cursor: pointer;"
+        :style="profileSection === 'addressInfo' ? { borderBottom: '4px solid #854fff', paddingBottom: '10px' } : { paddingBottom: '5px' }"
+        :class="[{ active: profileSection === 'addressInfo' }]" 
+      >
+      <strong>Address</strong>
+    </h6>
+    </div>
+      <CForm novalidate :validated="validatedCustom01" @submit.prevent="handleSave" class="row g-3 needs-validation">
+        <div class="" v-if="profileSection === 'profileInfo'">
+          <div class="d-flex gap-4">
+          <CustomInput
+          v-model="data.firstname"
+          feedbackInvalid="Firstname is required"
+          placeholder="Enter FirstName"
+          label="First Name:"
+          type="text"
+          icon="person"
+          required
+        />
+         <CustomInput
+          v-model="data.lastname"
+          feedbackInvalid="LastName is required"
+          placeholder="Enter LastName"
+          type="text"
+          label="Last Name:"
+          icon="person"
+          required
+        />
+        </div>
         <div class="d-flex gap-4">
-        <CustomInput
-        v-model="data.firstname"
-        feedbackInvalid="Firstname is required"
-        placeholder="Enter FirstName"
-        label="First Name:"
-        type="text"
-        icon="person"
-        required
-      />
-       <CustomInput
-        v-model="data.lastname"
-        feedbackInvalid="LastName is required"
-        placeholder="Enter LastName"
-        type="text"
-        label="Last Name:"
-        icon="person"
-        required
-      />
-      </div>
-      <div class="d-flex gap-4">
-        <CustomInput
-        v-model="data.email"
-        feedbackInvalid="Email is required"
-        placeholder="Enter Email"
-        label="Email:"
-        type="email"
-        icon="email"
-        required
-      />
-       <CustomInput
-        v-model="data.mobile"
-        feedbackInvalid="Phone Number is required"
-        placeholder="Enter Phone Number"
-        type="text"
-        label=" Phone Number:"
-        icon="phone"
-        required
-      />
-      </div>
-      <div class="d-flex gap-4">
-        <CustomInput
-        v-model="data.birth"
-        placeholder="12/08/2001"
-        type="text"
-        label="Date of Birth:"
-        icon="calendar_today"
-        required
-      />
-       <CustomInput
-        v-model="data.nationality"
-        placeholder="Enter Nationality"
-        type="text"
-        label="Nationality:"
-        icon="flag"
-        required
-      />
-      </div>
-      <div class="form-check form-switch pt-3">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault2"/>
-        <label class="form-check-label p-color mx-2" for="flexSwitchCheckDefault2">
-        <small>Use full name to display </small>
-        </label>
-      </div>
-      </div>
-      <div class="" v-if="profileSection === 'addressInfo'">
+          <CustomInput
+          v-model="data.email"
+          feedbackInvalid="Email is required"
+          placeholder="Enter Email"
+          label="Email:"
+          type="email"
+          icon="email"
+          required
+        />
+         <CustomInput
+          v-model="data.mobile"
+          feedbackInvalid="Phone Number is required"
+          placeholder="Enter Phone Number"
+          type="text"
+          label=" Phone Number:"
+          icon="phone"
+          required
+        />
+        </div>
         <div class="d-flex gap-4">
-        <CustomInput
-        v-model="data.address1"
-        feedbackInvalid="Address is required"
-        placeholder="Enter Address Line 1"
-        label="Address Line 1:"
-        type="text"
-        icon="place"
-        required
-      />
-       <CustomInput
-        v-model="data.address2"
-        feedbackInvalid="Address 2 is required"
-        placeholder="Enter Address Line 2"
-        type="tel"
-        label="Address Line 2:"
-        icon="place"
-        required
-      />
-      </div>
-      <div class="d-flex gap-4">
-        <CustomInput
-        v-model="data.state"
-        placeholder="Enter State"
-        type="text"
-        label="State:"
-        icon="location_city"
-        required
-      />
-       <CustomInput
-        v-model="data.country"
-        placeholder="Enter Country"
-        type="text"
-        label="Country:"
-         icon="public"
-        required
-      />
-      </div>
-      </div>
-    </CForm>
+          <CustomInput
+          v-model="data.birth"
+          placeholder="12/08/2001"
+          type="text"
+          label="Date of Birth:"
+          icon="calendar_today"
+          required
+        />
+         <CustomInput
+          v-model="data.nationality"
+          placeholder="Enter Nationality"
+          type="text"
+          label="Nationality:"
+          icon="flag"
+          required
+        />
+        </div>
+        <div class="form-check form-switch pt-3">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault2"/>
+          <label class="form-check-label p-color mx-2" for="flexSwitchCheckDefault2">
+          <small>Use full name to display </small>
+          </label>
+        </div>
+        </div>
+        <div class="" v-if="profileSection === 'addressInfo'">
+          <div class="d-flex gap-4">
+          <CustomInput
+          v-model="data.address1"
+          feedbackInvalid="Address is required"
+          placeholder="Enter Address Line 1"
+          label="Address Line 1:"
+          type="text"
+          icon="place"
+          required
+        />
+         <CustomInput
+          v-model="data.address2"
+          feedbackInvalid="Address 2 is required"
+          placeholder="Enter Address Line 2"
+          type="tel"
+          label="Address Line 2:"
+          icon="place"
+          required
+        />
+        </div>
+        <div class="d-flex gap-4">
+          <CustomInput
+          v-model="data.state"
+          placeholder="Enter State"
+          type="text"
+          label="State:"
+          icon="location_city"
+          required
+        />
+         <CustomInput
+          v-model="data.country"
+          placeholder="Enter Country"
+          type="text"
+          label="Country:"
+           icon="public"
+          required
+        />
+        </div>
+        </div>
+      </CForm>
   </CustomModal>
 
   <CustomModal
@@ -491,9 +533,9 @@
     backgroundColor="#f5f6fa"
     :disabled="isFormInvalid || passwordMatchError"
   >
-      <div v-if="message" class="alert text-center alert-danger">
-        {{ message }}
-      </div>
+    <div v-if="message" class="alert text-center alert-danger">
+      {{ message }}
+    </div>
     <CForm novalidate :validated="validatedCustom02" @submit.prevent="handlePasswordSave" class="row needs-validation">
       <CustomInput
         v-model="passwordData.currentPassword"
@@ -536,6 +578,7 @@ import { ref, onMounted, watch, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import CustomModal from '@/components/CustomModal.vue';
+// import CustomButton from '@/components/CustomButton.vue';
 import { CForm } from '@coreui/vue';
 import CustomInput from '@/components/CustomInput.vue';
 
@@ -547,6 +590,13 @@ const loginHistory = ref([]);
 const itemsPerPage = 5;
 const currentPage = ref(1);
 const validatedCustom02 = ref(false);
+const validatedCustom03 = ref(false);
+
+const is2FAEnabled = ref(false);
+const isProcessing = ref(false);
+const visibleModal2 = ref(false)
+const code = ref('');
+const qrCode = ref('');
 
 const data = ref({
   firstname: '',
@@ -560,6 +610,53 @@ const data = ref({
   address1: '',
   address2: '',
 });
+
+const toggle2FA = () => {
+  if (is2FAEnabled.value) {
+    visibleModal2.value = true;
+  } else {
+    enable2FA();
+  }
+};
+
+const enable2FA = async () => {
+  isProcessing.value = true;
+  try {
+    await store.dispatch('auth/enable2FA');
+    const response = store.getters['auth/enable2FA'];
+    qrCode.value = response.qr_code
+    visibleModal2.value = true;
+  } catch (error) {
+    console.error('Error enabling 2FA:', error);
+  } finally {
+    isProcessing.value = false;
+  }
+};
+
+const confirmAction = async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form.checkValidity()) {
+    event.stopPropagation();
+  } else {
+  isProcessing.value = true;
+  try {
+    if (is2FAEnabled.value) {
+      await store.dispatch('auth/disable2FA');
+      is2FAEnabled.value = false;
+    } else {
+      await store.dispatch('auth/confirm2FA', { code: code.value });
+      is2FAEnabled.value = true;
+    }
+    visibleModal2.value = false;
+  } catch (error) {
+    console.error('Error confirming 2FA:', error);
+  } finally {
+    isProcessing.value = false;
+  }
+}
+validatedCustom03.value = true;
+};
 
 const passwordData = ref({
   currentPassword: '',
@@ -579,6 +676,10 @@ const isFormInvalid = computed(() =>
   passwordData.value.currentPassword === '' ||
   passwordData.value.password === '' ||
   passwordData.value.password_confirmation === ''
+);
+
+const isInvalid = computed(() => 
+  code.value === ''
 );
 
 const selectSection = (section) => {
@@ -747,6 +848,10 @@ watch(route, (newRoute) => {
 }
 .custom-input {
   border: 1px solid #e2e5eb !important;
+}
+svg{
+  width: 250px!important;
+  height: 250px!important;
 }
 
 </style>

@@ -18,14 +18,6 @@ Skilllink is a comprehensive Learning Management System (LMS) developed using Vu
 ![Screenshot 2](public/screenshots/screenshot2.png)
 ### Login
 ![Screenshot 3](public/screenshots/screenshot3.png)
-### Page Footer
-![Screenshot 4](public/screenshots/screenshot4.png)
-### Forgot Password
-![Screenshot 5](public/screenshots/screenshot5.png)
-### SignUp Page
-![Screenshot6 ](public/screenshots/screenshot6.png)
-### Tutorial Mngt
-![Screenshot7 ](public/screenshots/screenshot7.png)
 ### Email Verification
 ![Screenshot9 ](public/screenshots/screenshot9.png)
 ### Sample Email Verification
@@ -36,3 +28,6 @@ Skilllink is a comprehensive Learning Management System (LMS) developed using Vu
 ![Screenshot11 ](public/screenshots/screenshot11.png)
 ### Profile Page 
 ![Screenshot12 ](public/screenshots/screenshot12.png)
+### 2FA 
+![Screenshot13 ](public/screenshots/screenshot13.png)
+

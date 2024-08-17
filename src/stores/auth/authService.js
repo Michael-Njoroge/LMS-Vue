@@ -28,6 +28,10 @@ export const resendVerification = (data) => {
   return axios.post('/email/resend', data);
 };
 
+export const enable2FA = () => {
+  return axios.post('/2fa/prepare');
+};
+
 export const emailVerification = (data) => {
   return axios.get(`/email/verify/${data.id}/${data.hash}?expires=${data.expires}&signature=${data.signature}`);
 };
