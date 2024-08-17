@@ -11,6 +11,7 @@ import {
   loginHistory as loginHistoryService, 
   updatePassword as updatePasswordService, 
   enable2FA as enable2FAService, 
+  confirm2FA as confirm2FAService, 
 } from './authService';
 import { useToast } from 'vue-toastification';
 
@@ -35,6 +36,7 @@ export const auth = {
     isAdmin: (state) => state.isAdmin,
     redirectUrl: (state) => state.redirectUrl,
     enable2FA: (state) => state.enable2FA,
+    confirm2FA: (state) => state.confirm2FA,
     callback: (state) => state.callback,
     loginHistory: (state) => state.loginHistory,
     user: (state) => state.user,
@@ -90,6 +92,9 @@ export const auth = {
     },
     enable2FA(state,enable2FA) {
       state.enable2FA = enable2FA;
+    },
+    confirm2FA(state,confirm2FA) {
+      state.confirm2FA = confirm2FA;
     },
     loginHistory(state, loginHistory) {
       state.loginHistory = loginHistory;
@@ -206,6 +211,25 @@ export const auth = {
       } catch (error) {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Failed to send');
+      } finally {
+        commit('setLoading', false);
+      }
+    },
+
+    async confirm2FA({ commit },data) {
+      commit('setLoading', true);
+      commit('setError', false);
+      commit('setSuccess', false);
+      try {
+        const response = await confirm2FAService(data);
+        const confirm2FA = response.data.data;
+        commit('confirm2FA', confirm2FA);
+        commit('setSuccess', true);
+        commit('setMessage', response?.data?.message || 'Two-factor authentication confirmed');
+        toast.info(response?.data?.message || 'Two-factor authentication confirmed');
+      } catch (error) {
+        commit('setError', true);
+        commit('setMessage', error.response?.data?.message || 'Failed to confirm');
       } finally {
         commit('setLoading', false);
       }

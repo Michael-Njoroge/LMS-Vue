@@ -32,6 +32,10 @@ export const enable2FA = () => {
   return axios.post('/2fa/prepare');
 };
 
+export const confirm2FA = (data) => {
+  return axios.post('/2fa/confirm',data);
+};
+
 export const emailVerification = (data) => {
   return axios.get(`/email/verify/${data.id}/${data.hash}?expires=${data.expires}&signature=${data.signature}`);
 };

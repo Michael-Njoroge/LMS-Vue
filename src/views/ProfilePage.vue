@@ -342,7 +342,7 @@
                  :visible="visibleModal2"
                   @update:visible="visibleModal2 = $event"
                   @save="confirmAction"
-                  :modalTitle="is2FAEnabled ? 'Disable 2FA' : 'Enable 2FA'"
+                  :modalTitle="is2FAEnabled ? 'Disable 2FA' : 'Add QR Code'"
                   colorCancel="secondary"
                   colorSave="success text-white w-100"
                   alignment="center"
@@ -351,19 +351,32 @@
                   :buttonText="is2FAEnabled ? 'Disable 2FA' : 'Enable 2FA'"
                   type="submit"
                   backgroundColor="#f5f6fa"
-                  :disabled="isInvalid"
+                  :disabled="!isCodeComplete"
                >
                   <CForm novalidate :validated="validatedCustom03" @submit.prevent="confirmAction" class="row g-3 needs-validation">
-                    <p>{{ is2FAEnabled ? 'Are you sure you want to disable two-factor authentication?' : 'Scan the QR code with your 2FA app and enter the code.' }}</p>
+                    <p>{{ is2FAEnabled ? 'Are you sure you want to disable two-factor authentication?' : "Using your authenticator app, scan the barcode below. Once you've scanned the barcode, confirm the code you received." }}</p>
                     <div v-if="!is2FAEnabled">
-                      <div v-html="qrCode" class="d-flex align-items-center justify-content-center mx-auto" style="max-width: 250px; max-height: 250px; text-align: center;"></div>
-                      <CustomInput 
-                        v-model="code" 
-                        feedbackInvalid="Authentication Code is required"
-                        label="Authentication Code" 
-                        placeholder="Enter the code from your app" 
-                        required
-                      />
+                      <div v-html="qrCode" class="d-flex align-items-center justify-content-center mx-auto" style="max-width: 150px; max-height: 150px; text-align: center;"></div>
+                      <p v-if="!toggleSecret" class="text-center mt-2" style="cursor: pointer;" @click="showSecret"><strong>Can't scan the code?</strong></p>
+                      <p v-if="toggleSecret" class="mt-2 text-center" style="cursor: pointer;">
+                        <span class="mx-1">Enter the secret key</span>
+                        <span class="fw-bolder px-2 py-1 text-muted text-small" style="background-color: #fde6e9;border-radius: 5px;">{{secret}}</span>
+                      </p>
+                        <div class="code-input">
+                          <input
+                            v-for="(digit, index) in code"
+                            :key="index"
+                            v-model="code[index]"
+                            @input="moveFocus(index)"
+                            @keydown.backspace="moveBack(index)"
+                            maxlength="1"
+                            class="digit-input"
+                            type="text"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            :ref="el => inputRefs[index] = el"
+                          />
+                        </div>
                     </div>
                   </CForm>
               </CustomModal>
@@ -595,8 +608,31 @@ const validatedCustom03 = ref(false);
 const is2FAEnabled = ref(false);
 const isProcessing = ref(false);
 const visibleModal2 = ref(false)
-const code = ref('');
+const toggleSecret = ref(false)
+const code = ref(['', '', '', '', '', '']);
+const inputRefs = ref([]);
 const qrCode = ref('');
+const secret = ref('');
+
+const moveFocus = (index) => {
+  if (code.value[index].length === 1 && index < code.value.length - 1) {
+    inputRefs.value[index + 1].focus();
+  }
+};
+
+const moveBack = (index) => {
+  if (code.value[index] === '' && index > 0) {
+    inputRefs.value[index - 1].focus();
+  }
+};
+
+const isCodeComplete = computed(() => {
+  return code.value.every(digit => digit.length === 1);
+});
+
+const showSecret = () => {
+  toggleSecret.value = true
+}
 
 const data = ref({
   firstname: '',
@@ -625,6 +661,7 @@ const enable2FA = async () => {
     await store.dispatch('auth/enable2FA');
     const response = store.getters['auth/enable2FA'];
     qrCode.value = response.qr_code
+    secret.value = response.string
     visibleModal2.value = true;
   } catch (error) {
     console.error('Error enabling 2FA:', error);
@@ -676,10 +713,6 @@ const isFormInvalid = computed(() =>
   passwordData.value.currentPassword === '' ||
   passwordData.value.password === '' ||
   passwordData.value.password_confirmation === ''
-);
-
-const isInvalid = computed(() => 
-  code.value === ''
 );
 
 const selectSection = (section) => {
@@ -849,9 +882,21 @@ watch(route, (newRoute) => {
 .custom-input {
   border: 1px solid #e2e5eb !important;
 }
-svg{
-  width: 250px!important;
-  height: 250px!important;
+
+.code-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; 
+}
+
+.digit-input {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 </style>
