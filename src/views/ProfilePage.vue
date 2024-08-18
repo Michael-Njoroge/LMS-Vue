@@ -324,16 +324,6 @@
                               <small>Secure your account with 2FA security. When it is activated you will need to enter not only your password, but also a special code using an app. You can receive this code by mobile app.</small>
                           </p>
                           <button @click="toggle2FA" :disabled="isProcessing" type="button" style="text-transform: initial; padding: 5px 12px;" class="btn btn-primary btn-sm mb-0"> {{ is2FAEnabled ? 'Disable' : 'Enable' }} </button>
-                          <!-- <CustomButton
-                            @click="toggle2FA"
-                            :isLoading="isProcessing"
-                            :disabled="isProcessing"
-                            color="primary"
-                            :text="is2FAEnabled ? 'Disable' : 'Enable'"
-                            loadingText="Please wait..."
-                            customClass="text-white w-100 fs-6"
-                            shape="rounded-1"
-                          ></CustomButton> -->
                       </div>
                   </div>   
               </div>
@@ -354,7 +344,7 @@
                   :disabled="!isCodeComplete"
                >
                   <CForm novalidate :validated="validatedCustom03" @submit.prevent="confirmAction" class="row g-3 needs-validation">
-                    <p>{{ is2FAEnabled ? 'Are you sure you want to disable two-factor authentication?' : "Using your authenticator app, scan the barcode below. Once you've scanned the barcode, confirm the code you received." }}</p>
+                    <p class="text-muted">{{ is2FAEnabled ? 'Are you sure you want to disable two-factor authentication?' : "Using your authenticator app, scan the barcode below. Once you've scanned the barcode, confirm the code you received." }}</p>
                     <div v-if="!is2FAEnabled">
                       <div v-html="qrCode" class="d-flex align-items-center justify-content-center mx-auto" style="max-width: 150px; max-height: 150px; text-align: center;"></div>
                       <p v-if="!toggleSecret" class="text-center mt-2" style="cursor: pointer;" @click="showSecret"><strong>Can't scan the code?</strong></p>
@@ -362,6 +352,10 @@
                         <span class="mx-1">Enter the secret key</span>
                         <span class="fw-bolder px-2 py-1 text-muted text-small" style="background-color: #fde6e9;border-radius: 5px;">{{secret}}</span>
                       </p>
+                        <div class="d-flex flex-column mb-3">
+                          <label class="text-muted">Enter the code from your authenticator app</label>
+                          <strong v-if="message" class="small text-center text-danger mt-2">{{ message }}</strong>
+                        </div>
                         <div class="code-input">
                           <input
                             v-for="(digit, index) in code"
@@ -371,6 +365,7 @@
                             @keydown.backspace="moveBack(index)"
                             maxlength="1"
                             class="digit-input"
+                            autofocus
                             type="text"
                             inputmode="numeric"
                             pattern="[0-9]*"
@@ -614,6 +609,7 @@ const inputRefs = ref([]);
 const qrCode = ref('');
 const secret = ref('');
 
+
 const moveFocus = (index) => {
   if (code.value[index].length === 1 && index < code.value.length - 1) {
     inputRefs.value[index + 1].focus();
@@ -631,7 +627,7 @@ const isCodeComplete = computed(() => {
 });
 
 const showSecret = () => {
-  toggleSecret.value = true
+    toggleSecret.value = true
 }
 
 const data = ref({
@@ -660,6 +656,9 @@ const enable2FA = async () => {
   try {
     await store.dispatch('auth/enable2FA');
     const response = store.getters['auth/enable2FA'];
+    setTimeout(() => {
+      store.dispatch('auth/clearMessage');
+    }, 100);
     qrCode.value = response.qr_code
     secret.value = response.string
     visibleModal2.value = true;
@@ -670,29 +669,32 @@ const enable2FA = async () => {
   }
 };
 
-const confirmAction = async (event) => {
-  event.preventDefault();
-  const form = event.currentTarget;
-  if (!form.checkValidity()) {
-    event.stopPropagation();
-  } else {
+// Watch for when the code becomes complete
+watch(isCodeComplete, (newValue) => {
+  if (newValue) {
+    confirmAction();
+  }
+});
+
+const confirmAction = async () => {
   isProcessing.value = true;
   try {
     if (is2FAEnabled.value) {
       await store.dispatch('auth/disable2FA');
-      is2FAEnabled.value = false;
+      setTimeout(() => {
+        store.dispatch('auth/clearMessage');
+      }, 3000);
     } else {
-      await store.dispatch('auth/confirm2FA', { code: code.value });
-      is2FAEnabled.value = true;
+      await store.dispatch('auth/confirm2FA', { code: code.value.join('') });
+      setTimeout(() => {
+        store.dispatch('auth/clearMessage');
+      }, 3000);
     }
-    visibleModal2.value = false;
   } catch (error) {
     console.error('Error confirming 2FA:', error);
   } finally {
     isProcessing.value = false;
   }
-}
-validatedCustom03.value = true;
 };
 
 const passwordData = ref({
@@ -774,7 +776,7 @@ const handlePasswordSave =  async(event) => {
       await store.dispatch('auth/updatePassword', passwordData.value);
       setTimeout(() => {
         store.dispatch('auth/clearMessage');
-      }, 8000);
+      }, 5000);
     } catch (error) {
         console.error('Failed:', error);
     }

@@ -4,26 +4,28 @@
       <div class="col-5 mx-auto">
         <div class="card px-2">
           <div class="card-body">
-            <h5 v-if="!isEmailNotVerified" class="card-title text-center fw-bold">Log in to your account</h5>
-            <div v-if="!isEmailNotVerified" class="d-flex justify-content-center align-items-center gap-4 mt-3">
+            <h5 v-if="!isVerificationRequired" class="card-title text-center fw-bold">Log in to your account</h5>
+            <div v-if="!isVerificationRequired" class="d-flex justify-content-center align-items-center gap-4 mt-3">
+              <!-- Social Login Buttons -->
               <div class="card col-2" style="cursor: pointer;" @click="redirect('google')">
                 <div class="card-body py-1 d-flex justify-content-center align-items-center">
                   <i class="fab fa-google fs-5" style="color: #db4437;"></i>
                 </div>
               </div>
               <div class="card col-2" style="cursor: pointer;" @click="redirect('github')">
-                <div class="card-body py-1 d-flex justify-content-center align-items-center" >
+                <div class="card-body py-1 d-flex justify-content-center align-items-center">
                   <i class="fab fa-github fs-5" style="color: #333;"></i>
                 </div>
               </div>
               <div class="card col-2" style="cursor: pointer;" @click="redirect('linkedin')">
                 <div class="card-body py-1 d-flex justify-content-center align-items-center">
-                  <i class="fab fa-linkedin  fs-5" style="color: #1da1f2;"></i>
+                  <i class="fab fa-linkedin fs-5" style="color: #1da1f2;"></i>
                 </div>
               </div>
             </div>
-            <h6 v-if="!isEmailNotVerified" class="mt-3">Or log in with an email</h6>
-            <CForm v-if="!isEmailNotVerified" novalidate :validated="validatedCustom01" @submit="handleLogin" class="row g-3 needs-validation">
+            <h6 v-if="!isVerificationRequired" class="mt-3">Or log in with an email</h6>
+            <!-- Login Form -->
+            <CForm v-if="!isVerificationRequired" novalidate :validated="validatedCustom01" @submit="handleLoginAndVerification" class="row g-3 needs-validation">
               <CustomInput
                 v-model="data.email"
                 customClass="mt-2"
@@ -59,18 +61,29 @@
               </CustomButton>
               <router-link to="signup" class="text-right"><strong>Don't have an account?</strong></router-link>
             </CForm>
+
+            <!-- Verification Code Form -->
             <div v-else>
-              <h5 class="mb-3 text-center">Please verify your email address to log in.</h5>
-              <h6 class="my-3 text-center">Or resend verification email</h6>
-              <CustomButton
-                @click="handleResendVerification"
-                :isLoading="isLoading"
-                color="primary"
-                text="Resend Verification Email"
-                loadingText="Sending..."
-                customClass="text-white w-100 fs-6"
-                shape="rounded-1"
-              ></CustomButton>
+              <h5 class="mb-3 text-center">Enter the verification code sent to your email.</h5>
+              <CForm @submit="handleLoginAndVerification" class="row g-3 needs-validation">
+                <div class="code-input">
+                  <input
+                    v-for="(digit, index) in code"
+                    :key="index"
+                    v-model="code[index]"
+                    @input="moveFocus(index)"
+                    @keydown.backspace="moveBack(index)"
+                    maxlength="1"
+                    class="digit-input"
+                    autofocus
+                    type="text"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    :ref="el => inputRefs[index] = el"
+                  />
+                </div>
+              </CForm>
+              <h6 class="my-3 text-center">Didn't receive the code? <a @click="handleResendCode">Resend Code</a></h6>
             </div>
           </div>
         </div>
@@ -95,8 +108,11 @@ const data = ref({
   password: '',
   remember: false
 });
+
+const code = ref(['', '', '', '', '', '']);
+const inputRefs = ref([]);
 const validatedCustom01 = ref(false);
-const isEmailNotVerified = ref(false);
+const isVerificationRequired = ref(false);
 
 const user = computed(() => store.getters['auth/user']);
 const role = computed(() => user?.value?.role?.role_name);
@@ -105,8 +121,30 @@ const isLoading = computed(() => store.getters['auth/isLoading']);
 const isFormInvalid = computed(() => data.value.email === '' || data.value.password === '');
 const url = computed(() => store.getters['auth/redirectUrl']);
 
+const moveFocus = (index) => {
+  if (code.value[index].length === 1 && index < code.value.length - 1) {
+    inputRefs.value[index + 1].focus();
+  }
+};
+
+const moveBack = (index) => {
+  if (code.value[index] === '' && index > 0) {
+    inputRefs.value[index - 1].focus();
+  }
+};
+
+const isCodeComplete = computed(() => {
+  return code.value.every(digit => digit.length === 1);
+});
+
+watch(isCodeComplete, (newValue) => {
+  if (newValue) {
+    handleLoginAndVerification();
+  }
+});
+
 watch([isLoggedIn, role], ([loggedIn, userRole]) => {
-  if (loggedIn && router.currentRoute.value.name !== 'LoginPage') {
+  if (loggedIn && !isVerificationRequired.value) {
     if (userRole === 'admin') {
       router.push('/admin');
     } else {
@@ -115,17 +153,22 @@ watch([isLoggedIn, role], ([loggedIn, userRole]) => {
   }
 }, { immediate: true });
 
-const handleLogin = async (event) => {
+const handleLoginAndVerification = async (event) => {
   event.preventDefault();
   const form = event.currentTarget;
+
   if (!form.checkValidity()) {
     event.stopPropagation();
   } else {
     try {
-      await store.dispatch('auth/login', data.value);
-      if (isLoggedIn.value === false) {
-        isEmailNotVerified.value = true;
-      }
+      const payload = {
+        email: data.value.email,
+        password: data.value.password,
+        remember: data.value.remember,
+        verification_code: code.value.join(''),
+      };
+
+      await store.dispatch('auth/login', payload);
 
       if (isLoggedIn.value) {
         const userRole = role.value;
@@ -134,34 +177,36 @@ const handleLogin = async (event) => {
         } else {
           router.push('/');
         }
+      } else {
+        isVerificationRequired.value = true;
       }
     } catch (error) {
-        console.error('Login failed:', error);
+      console.error('Login or verification failed:', error);
     }
   }
+
   validatedCustom01.value = true;
 };
 
-const handleResendVerification = async () => {
+const handleResendCode = async () => {
   isLoading.value = true;
   try {
-    await store.dispatch('auth/resendVerification', { email: data.value.email });
+    await store.dispatch('auth/resendCode', { email: data.value.email });
     isLoading.value = false;
   } catch (error) {
-    console.error('Resend verification failed:', error);
+    console.error('Resend code failed:', error);
     isLoading.value = false;
   }
 };
 
-const redirect =  async (provider) => {
-  try{
+const redirect = async (provider) => {
+  try {
     await store.dispatch('auth/redirect', provider);
-    window.location.href = url.value
-  }catch(error){
-    console.log("error",error)
+    window.location.href = url.value;
+  } catch (error) {
+    console.log('error', error);
   }
-}
-
+};
 </script>
 
 <style scoped>
@@ -176,5 +221,21 @@ a:hover {
 }
 .container-fluid {
   margin-top: 3rem !important;
+}
+
+.code-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; 
+}
+
+.digit-input {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 </style>

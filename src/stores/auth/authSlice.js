@@ -207,7 +207,6 @@ export const auth = {
         commit('enable2FA', enable2FA);
         commit('setSuccess', true);
         commit('setMessage', response?.data?.message || 'Two-factor authentication setup details Sent');
-        toast.info(response?.data?.message || 'Two-factor authentication setup details Sent');
       } catch (error) {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Failed to send');
