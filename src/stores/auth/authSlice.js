@@ -259,7 +259,6 @@ export const auth = {
       } catch (error) {
         commit('setError', true);
         commit('setMessage', error.response?.data?.message || 'Login failed');
-        toast.error(error.response?.data?.message || 'Login failed');
       } finally {
         commit('setLoading', false);
       }

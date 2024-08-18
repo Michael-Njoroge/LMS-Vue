@@ -25,7 +25,7 @@
             </div>
             <h6 v-if="!isVerificationRequired" class="mt-3">Or log in with an email</h6>
             <!-- Login Form -->
-            <CForm v-if="!isVerificationRequired" novalidate :validated="validatedCustom01" @submit="handleLoginAndVerification" class="row g-3 needs-validation">
+            <CForm v-if="!isVerificationRequired" novalidate :validated="validatedCustom01" @submit="handleLogin" class="row g-3 needs-validation">
               <CustomInput
                 v-model="data.email"
                 customClass="mt-2"
@@ -65,7 +65,7 @@
             <!-- Verification Code Form -->
             <div v-else>
               <h5 class="mb-3 text-center">Enter the verification code sent to your email.</h5>
-              <CForm @submit="handleLoginAndVerification" class="row g-3 needs-validation">
+              <CForm @submit="handleVerificationCode" class="row g-3 needs-validation">
                 <div class="code-input">
                   <input
                     v-for="(digit, index) in code"
@@ -91,6 +91,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import CustomInput from '@/components/CustomInput.vue';
@@ -119,6 +120,7 @@ const role = computed(() => user?.value?.role?.role_name);
 const isLoggedIn = computed(() => store.getters['auth/isLoggedIn']);
 const isLoading = computed(() => store.getters['auth/isLoading']);
 const isFormInvalid = computed(() => data.value.email === '' || data.value.password === '');
+const isCodeInvalid = computed(() => code.value === '');
 const url = computed(() => store.getters['auth/redirectUrl']);
 
 const moveFocus = (index) => {
@@ -139,7 +141,7 @@ const isCodeComplete = computed(() => {
 
 watch(isCodeComplete, (newValue) => {
   if (newValue) {
-    handleLoginAndVerification();
+    handleVerificationCode();
   }
 });
 
@@ -153,39 +155,50 @@ watch([isLoggedIn, role], ([loggedIn, userRole]) => {
   }
 }, { immediate: true });
 
-const handleLoginAndVerification = async (event) => {
+const handleLogin = async (event) => {
   event.preventDefault();
   const form = event.currentTarget;
-
   if (!form.checkValidity()) {
     event.stopPropagation();
   } else {
     try {
-      const payload = {
+      await store.dispatch('auth/login', data.value);
+      if (!isLoggedIn.value) {
+        isVerificationRequired.value = true;
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  }
+  validatedCustom01.value = true;
+};
+
+const handleVerificationCode = async () => {
+  event.preventDefault();
+  if (isCodeInvalid.value) {
+    event.stopPropagation();
+  } else {
+    try {
+     const payload = {
         email: data.value.email,
         password: data.value.password,
         remember: data.value.remember,
         verification_code: code.value.join(''),
       };
-
-      await store.dispatch('auth/login', payload);
-
+      await store.dispatch('auth/login', payload );
       if (isLoggedIn.value) {
         const userRole = role.value;
+        console.log("userRole",userRole)
         if (userRole === 'admin') {
           router.push('/admin');
         } else {
           router.push('/');
         }
-      } else {
-        isVerificationRequired.value = true;
       }
     } catch (error) {
-      console.error('Login or verification failed:', error);
+      console.error('Code verification failed:', error);
     }
   }
-
-  validatedCustom01.value = true;
 };
 
 const handleResendCode = async () => {
@@ -207,7 +220,9 @@ const redirect = async (provider) => {
     console.log('error', error);
   }
 };
+
 </script>
+
 
 <style scoped>
 a {
